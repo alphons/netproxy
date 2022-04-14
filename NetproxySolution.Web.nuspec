@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>netproxy</id>
+    <version>1.0.0</version>
+    <title>netproxy</title>
+    <authors>Alphons van der Heijden</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <!-- <icon>icon.png</icon> -->
+    <projectUrl>https://github.com/alphons/netproxy</projectUrl>
+    <description>netproxy is a javascript framework for posting data in json format to urls</description>
+    <releaseNotes>First release.</releaseNotes>
+    <copyright>$copyright$</copyright>
+    <tags>javascript netproxy json</tags>
+  </metadata>
+   <files>
+        <!-- Add a readme -->
+
+        <file src="src\NetproxySolution.Web\web.config.example" target="content" />
+        <file src="src\NetproxySolution.Web\wwwroot\**\*.*" target="content" />
+    </files>
+</package>
