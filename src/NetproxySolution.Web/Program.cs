@@ -1,5 +1,12 @@
 // simple webserver for hosting demo files
-var app = WebApplication.CreateBuilder(args).Build();
+
+var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+{
+    // the 'real' root of the application
+    ContentRootPath = AppDomain.CurrentDomain.BaseDirectory
+});
+
+var app = builder.Build();
 
 app.MapGet("/api/helloworld", () => "{ \"Message\" : \"Hello, World\" }");
 

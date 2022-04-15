@@ -8,11 +8,11 @@
     }
   },
   "profiles": {
-    "Mvc.ModelBinding.MultiParameter.Testing": {
+    "NetproxySolution.Web": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:7134;http://localhost:5134",
+      "applicationUrl": "https://localhost:17188;http://localhost:15188",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
