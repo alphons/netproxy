@@ -6,7 +6,6 @@ body
 	font-family: Arial;
 	padding: 10px;
 	
-	overflow-x: hidden;
 	width: 100%;
 	box-sizing: border-box;
 }
@@ -20,23 +19,6 @@ a
 	a:hover
 	{
 		color: #444;
-	}
-
-#NetProxySpinner
-{
-	display: none;
-	position: fixed;
-	top: 50%;
-	left: 50%;
-	margin-top: -25px;
-	margin-left: -25px;
-	z-index: 1;
-}
-
-	#NetProxySpinner img
-	{
-		width:50px;
-		height:50px;
 	}
 
 
@@ -63,11 +45,6 @@ a
 .Error
 {
 	color: red;
-}
-
-body
-{
-	font-family: 'Arial';
 }
 
 .Flexing
@@ -97,11 +74,6 @@ video::-webkit-media-controls-time-remaining-display
 	display: none;
 }
 
-body
-{
-	padding: 20px;
-	overflow-x: auto;
-}
 
 .Hidden
 {

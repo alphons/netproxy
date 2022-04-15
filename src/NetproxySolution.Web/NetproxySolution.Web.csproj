@@ -15,4 +15,11 @@
 	  </Content>
 	</ItemGroup>
 
+	<ItemGroup>
+		<None Include="..\..\README.md">
+		</None>
+		<None Include="..\..\NetproxySolution.Web.nuspec">
+		</None>
+	</ItemGroup>
+
 </Project>

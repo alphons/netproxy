@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>netproxy</id>
-    <version>1.0.30</version>
+    <version>1.0.4</version>
     <title>netproxy</title>
     <authors>Alphons van der Heijden</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -19,6 +19,6 @@
   </metadata>
   
    <files>
-		<file src="src\NetproxySolution.Web\wwwroot\**.*" target="contentFile\any\any\wwwroot" />
+		<file src="src\NetproxySolution.Web\wwwroot\**.*" target="contentFiles\any\any\wwwroot" />
     </files>
 </package>
