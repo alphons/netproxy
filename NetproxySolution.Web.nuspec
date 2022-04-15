@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>netproxy</id>
-    <version>1.0.0</version>
+    <version>1.0.30</version>
     <title>netproxy</title>
     <authors>Alphons van der Heijden</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -13,11 +13,12 @@
     <releaseNotes>First release.</releaseNotes>
     <copyright>$copyright$</copyright>
     <tags>javascript netproxy json</tags>
+	<contentFiles>
+		<files include="**/*.*" copyToOutput="true" buildAction="Content" flatten="false" />
+    </contentFiles>
   </metadata>
+  
    <files>
-        <!-- Add a readme -->
-
-        <file src="src\NetproxySolution.Web\web.config.example" target="content" />
-        <file src="src\NetproxySolution.Web\wwwroot\**\*.*" target="content" />
+		<file src="src\NetproxySolution.Web\wwwroot\**.*" target="contentFile\any\any\wwwroot" />
     </files>
 </package>
