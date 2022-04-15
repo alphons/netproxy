@@ -1,5 +1,7 @@
 # netproxy
 
+The netproxy package consists of some javascript macros and javascript methods to make json calls to .net core controllers.
+
 Synchronous calls:
 
 ```javascript
@@ -97,4 +99,75 @@ public async Task<IActionResult> Upload(IFormFile file, string Form1)
   });
 }
 ```
+
+To add multiparameter model binding to MVC Core the nuget package `Mvc.ModelBinding.MultiParameter` can be used.
+
+```javascript
+result = await netproxyasync("./api/SomeMethod/two?SomeParameter3=three&SomeParameter6=six",
+{
+  "SomeParameter4": // Now the beast has a name
+  {
+    Name: "four",
+    "Users":
+    [
+      [{ Name: "User00", Alias: ['aliasa', 'aliasb', 'aliasc'] }, { Name: "User01" }],
+      [{ Name: "User10" }, { Name: "User11" }],
+      [{ Name: "User20" }, { Name: "User21" }]
+    ]
+  },
+  "SomeParameter5": "five" // double binder
+});
+alert(result.SomeParameter4.Users[0][0].Alias[1]); // 'aliasb'
+```
+
+
+```c#
+[HttpPost]
+[Route("~/api/SomeMethod/{SomeParameter2}")]
+public async Task<IActionResult> DemoMethod(
+	[FromCooky(Name = ".AspNetCore.Session")] string SomeParameter0,
+	[FromHeader(Name = "Referer")] string SomeParameter1,
+	[FromRoute] string SomeParameter2,
+	[FromQuery] string SomeParameter3,
+	[FromBody] ApiModel SomeParameter4,
+	[FromBody] string SomeParameter5,
+	[FromQuery]string SomeParameter6)
+{
+	await Task.Yield();
+	return Ok(new
+	{
+		SomeParameter0,
+		SomeParameter1,
+		SomeParameter2,
+		SomeParameter3,
+		SomeParameter4,
+		SomeParameter5,
+		SomeParameter6
+	);
+}
+
+[HttpPost]
+[Route("~/api/SomeMethod2/{SomeParameter2}")]
+public async Task<IActionResult> DemoMethod2(
+	string Referer,
+	string SomeParameter2,
+	string SomeParameter3,
+	ApiModel SomeParameter4,
+	string SomeParameter5,
+	string SomeParameter6)
+{
+	await Task.Yield();
+	return Ok(new
+	{
+		Referer,
+		SomeParameter2,
+		SomeParameter3,
+		SomeParameter4,
+		SomeParameter5,
+		SomeParameter6
+	);
+}
+```
+
+For more tests see the [Mvc.ModelBinding.MultiParameter](https://github.com/alphons/Mvc.ModelBinding.MultiParameter) project on github.
 
