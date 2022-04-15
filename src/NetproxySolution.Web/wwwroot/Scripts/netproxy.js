@@ -3,7 +3,7 @@
  *	@name		pure-dom netproxy and template and api
  * 
  *	@author     Alphons van der Heijden <alphons@heijden.com>
- *	@version    0.2.8 (last revision Apr, 2022)
+ *	@version    0.2.9 (last revision Apr, 2022)
  *	@copyright  (c) 2019-2022 Alphons van der Heijden
  *	@alias      netproxy, netproxyasync
  * 
@@ -19,7 +19,7 @@
 		if (typeof window.XMLHttpRequest === 'undefined')
 			return;
 
-		var spinner = document.getElementById("NetProxySpinner");
+		var spinner = document.getElementById("netproxyspinner");
 
 		if (typeof remote !== 'undefined')
 			url = remote + url;

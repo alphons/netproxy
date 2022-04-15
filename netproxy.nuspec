@@ -1,24 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package >
-  <metadata>
-    <id>netproxy</id>
-    <version>1.0.4</version>
-    <title>netproxy</title>
-    <authors>Alphons van der Heijden</authors>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <license type="expression">MIT</license>
-    <!-- <icon>icon.png</icon> -->
-    <projectUrl>https://github.com/alphons/netproxy</projectUrl>
-    <description>netproxy is a javascript framework for posting data in json format to urls</description>
-    <releaseNotes>First release.</releaseNotes>
-    <copyright>$copyright$</copyright>
-    <tags>javascript netproxy json</tags>
-	<contentFiles>
-		<files include="**/*.*" copyToOutput="true" buildAction="Content" flatten="false" />
-    </contentFiles>
-  </metadata>
-  
-   <files>
-		<file src="src\NetproxySolution.Web\wwwroot\**.*" target="contentFiles\any\any\wwwroot" />
-    </files>
+	<metadata>
+		<id>netproxy</id>
+		<version>1.0.5</version>
+		<title>netproxy</title>
+		<readme>docs\README.md</readme>
+		<authors>Alphons van der Heijden</authors>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<license type="expression">GPL-3.0-or-later</license>
+		<!-- <icon>icon.png</icon> -->
+		<projectUrl>https://github.com/alphons/netproxy</projectUrl>
+		<repository type="git" url="https://github.com/alphons/netproxy.git" branch="master" />
+		<description>netproxy is a javascript framework for posting data in json format to .net core controllers</description>
+		<!-- <releaseNotes>First release.</releaseNotes> -->
+		<!-- <copyright>$copyright$</copyright> -->
+		<tags>javascript netproxy netproxyasync json</tags>
+		<contentFiles>
+			<files include="**/*.*" copyToOutput="true" buildAction="Content" flatten="false" />
+		</contentFiles>
+	</metadata>
+
+	<files>
+		<file src="README.md" target="docs\" />
+
+		<file src="src\NetproxySolution.Web\wwwroot\**.*"
+			  exclude="src\NetproxySolution.Web\wwwroot\*.*"
+			  target="contentFiles\any\any\wwwroot" />
+	</files>
 </package>
