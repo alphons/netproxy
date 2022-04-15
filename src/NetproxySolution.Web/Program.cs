@@ -10,7 +10,7 @@ app.MapPost("/api/upload", (HttpContext ctx) =>
 	return "{ \"Message\" : \"Length:"+ ctx.Request.Form.Files[0].Length + " Extra:" + ctx.Request.Form["Form1"] + "\" }";
 });
 
-app.UseDefaultFiles(new DefaultFilesOptions() { DefaultFileNames = new string[] { "netproxydemo.htm" } });
+app.UseDefaultFiles();
 
 app.UseStaticFiles();
 
