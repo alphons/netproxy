@@ -52,7 +52,7 @@ netproxy("/api/upload", formData, function ()
 }, window.NetProxyErrorHandler, ProgressHandler);
 ```
 
-For uploading ~~big~~ huge files
+For uploading ~~big~~ huge files and hosting inside IIS add requestLimits to the web.config file.
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
