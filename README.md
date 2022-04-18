@@ -1,6 +1,7 @@
 # netproxy
 
-The netproxy package consists of some javascript macros and javascript methods to make json calls to .net core controllers.
+The netproxy package consists of some small javascript macros and javascript methods to make json calls to .net core controllers.
+There are no dependencies and is fully modern DOM compatible.
 
 Synchronous calls:
 
@@ -52,7 +53,29 @@ netproxy("/api/upload", formData, function ()
 }, window.NetProxyErrorHandler, ProgressHandler);
 ```
 
-For uploading ~~big~~ huge files and hosting inside IIS add requestLimits to the web.config file.
+A .net core controller handling the upload request must have attributes set for huge uploads.
+
+```c#
+[HttpPost]
+[Route("~/api/upload")]
+[RequestSizeLimit(2_500_000_000)]
+[RequestFormLimits(MultipartBodyLengthLimit = 2_500_000_000)]
+public async Task<IActionResult> Upload(IFormFile file, string Form1)
+{
+  if (file.Length > 0)
+  {
+    using var ms = new MemoryStream();
+    await file.CopyToAsync(ms); // some dummy operation
+  }
+  return Ok(new 
+  { 
+    file.Length,
+    Form1
+  });
+}
+```
+
+For uploading ~~big~~ huge files and hosting inside IIS add requestLimits changes to web.config file are necessary.
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -78,29 +101,7 @@ For uploading ~~big~~ huge files and hosting inside IIS add requestLimits to the
 </configuration>
 ```
 
-A .net core controller handling the upload request must have also some attributes set for huge uploads.
-
-```c#
-[HttpPost]
-[Route("~/api/upload")]
-[RequestSizeLimit(2_500_000_000)]
-[RequestFormLimits(MultipartBodyLengthLimit = 2_500_000_000)]
-public async Task<IActionResult> Upload(IFormFile file, string Form1)
-{
-  if (file.Length > 0)
-  {
-    using var ms = new MemoryStream();
-    await file.CopyToAsync(ms); // some dummy operation
-  }
-  return Ok(new 
-  { 
-    file.Length,
-    Form1
-  });
-}
-```
-
-To add multiparameter model binding to MVC Core the nuget package `Mvc.ModelBinding.MultiParameter` can be used.
+To add multiparameter model binding to MVC Core the nuget package [Mvc.ModelBinding.MultiParameter](https://www.nuget.org/packages/Mvc.ModelBinding.MultiParameter/) can be used.
 
 ```javascript
 result = await netproxyasync("./api/SomeMethod/two?SomeParameter3=three&SomeParameter6=six",
