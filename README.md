@@ -101,7 +101,9 @@ For uploading ~~big~~ huge files and hosting inside IIS add requestLimits change
 </configuration>
 ```
 
-To add multiparameter model binding to MVC Core the nuget package [Mvc.ModelBinding.MultiParameter](https://www.nuget.org/packages/Mvc.ModelBinding.MultiParameter/) can be used.
+The multiparameter model binding to MVC Core using nuget package 
+[Mvc.ModelBinding.MultiParameter](https://www.nuget.org/packages/Mvc.ModelBinding.MultiParameter/) 
+is part of netproxy as of version 1.1.0 and later.
 
 ```javascript
 result = await netproxyasync("./api/SomeMethod/two?SomeParameter3=three&SomeParameter6=six",
@@ -146,7 +148,9 @@ public async Task<IActionResult> DemoMethod(
 		SomeParameter6
 	);
 }
-
+```
+When parameters have unique names this can be simplified to:
+```c#
 [HttpPost]
 [Route("~/api/SomeMethod2/{SomeParameter2}")]
 public async Task<IActionResult> DemoMethod2(
