@@ -2,7 +2,7 @@
 <package >
 	<metadata>
 		<id>netproxy</id>
-		<version>1.1.2</version>
+		<version>1.1.3</version>
 		<title>netproxy</title>
 		<readme>docs\README.md</readme>
 		<authors>Alphons van der Heijden</authors>
@@ -13,7 +13,7 @@
 		<repository type="git" url="https://github.com/alphons/netproxy.git" branch="master" />
 		<description>netproxy is a lite framework for posting multiparameter data in json format to .net core controllers</description>
 		<dependencies>
-			<dependency id="Mvc.ModelBinding.MultiParameter" version="1.1.0" />
+			<dependency id="Mvc.ModelBinding.MultiParameter" version="1.1.3" />
 		</dependencies>
 		<!-- <releaseNotes>First release.</releaseNotes> -->
 		<!-- <copyright>$copyright$</copyright> -->
