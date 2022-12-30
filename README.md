@@ -1,5 +1,9 @@
 # netproxy
 
+Nuget package https://www.nuget.org/packages/netproxy/
+
+This package depends on the nuget package https://www.nuget.org/packages/Mvc.ModelBinding.MultiParameter/
+
 The netproxy package consists of some small javascript macros and javascript methods to make json calls to .net core controllers.
 There are no dependencies and is fully modern DOM compatible.
 
