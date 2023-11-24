@@ -106,7 +106,7 @@ async function NotFoundAsync()
 	{
 		r = await netproxyasync("./api/NotFound", null, ErrorHandler);
 
-		result.innerText = "Result:" + r.message;
+		result.innerText = "Result:" + r.Message;
 	}
 	catch (e)
 	{

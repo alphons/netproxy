@@ -24,23 +24,16 @@
 		if (typeof remote !== 'undefined')
 			url = remote + url;
 
-		var cross = url.indexOf(window.location.host) < 0 && url[0] !== '/';
+		var httpRequest;
 
 		var defaults =
 		{
-			async: true,
-			url: url,
-			method: data ? 'POST' : 'GET',
-			cross: cross,
+			url : url,
 			onsuccess: onsuccess,
 			onerror: onerror ? onerror : window.netproxyerrorhandler,
-			spinner: spinner,
-			data: data instanceof FormData ? data : JSON.stringify(data),
+			spinner : spinner,
 			timeoutSpinner: spinner ? window.setTimeout(function () { spinner.style.display = 'block'; }, 1000) : null
 		};
-
-		var httpRequest;
-		var response;
 
 		var timeouthandler = function ()
 		{
@@ -52,8 +45,10 @@
 			}
 		};
 
-		var callback = function () 
+		var loadendhandler = function () 
 		{
+			var response;
+
 			if (defaults.timeoutSpinner !== null)
 				window.clearTimeout(defaults.timeoutSpinner);
 
@@ -119,9 +114,9 @@
 		httpRequest = new XMLHttpRequest();
 		httpRequest.timeout = data instanceof FormData ? 0 : 30000;
 		httpRequest.ontimeout = timeouthandler;
-		httpRequest.onloadend = callback;
-		httpRequest.open(defaults.method, defaults.url, defaults.async);
-		httpRequest.withCredentials = defaults.cross;
+		httpRequest.onloadend = loadendhandler;
+		httpRequest.open(data ? 'POST' : 'GET', url, true);
+		httpRequest.withCredentials = url.indexOf(window.location.host) < 0 && url[0] !== '/';
 		if (onprogress)
 		{
 			httpRequest.addEventListener('progress', onprogress, false);
@@ -129,7 +124,7 @@
 		}
 		if (!(data instanceof FormData))
 			httpRequest.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
-		httpRequest.send(defaults.data);
+		httpRequest.send(data instanceof FormData ? data : JSON.stringify(data));
 		return this;
 	};
 
