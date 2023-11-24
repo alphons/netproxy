@@ -1,16 +1,17 @@
-﻿// version 0.2.5 (last revision Nov, 2023)
+﻿// version 2.0.1 (last revision Nov, 2023)
 
-window.netproxyerrorhandler = function (error, source, message) 
+window.netproxyerrorhandler = async function (error, source, message) 
 {
 	try
 	{
 		if (message.indexOf("exceeded") > 0)
 			return;
 		if (source.indexOf("api/errorlog") < 0)
-			window.netproxy("./api/errorlog",
+			await window.netproxysync("./api/errorlog",
 				{
-					"error": error,
 					"message": message,
+					"errormessage": error.message,
+					"errorstack": error.stack,
 					"referer": location.href,
 					"source": source
 				});
@@ -19,15 +20,16 @@ window.netproxyerrorhandler = function (error, source, message)
 }
 
 
-window.onerror = function (message, source, lineno, colno, error)
+window.onerror = async function (message, source, lineno, colno, error)
 {
 	try
 	{
 		if (source.indexOf("api/errorlog") < 0)
-			window.netproxy("./api/errorlog",
+			await window.netproxyasync("./api/errorlog",
 				{
-					"error": error,
 					"message": message,
+					"errormessage" : error.message,
+					"errorstack": error.stack,
 					"referer": "line:" + lineno + " col:" + colno,
 					"source": source
 				});

@@ -1,4 +1,4 @@
-# netproxy
+# netproxy 2.0
 
 Nuget package https://www.nuget.org/packages/netproxy/
 
@@ -55,6 +55,9 @@ netproxy("/api/upload", formData, function ()
 {
 	alert("Result:" + this.Message);
 }, window.NetProxyErrorHandler, ProgressHandler);
+
+var result = await netproxyasync("/api/upload", formData, window.NetProxyErrorHandler, ProgressHandler);
+alert("Result:" + result.Message);
 ```
 
 A .net core controller handling the upload request must have attributes set for huge uploads.

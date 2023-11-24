@@ -3,8 +3,8 @@
  *	@name		pure-dom netproxy and template and api
  * 
  *	@author     Alphons van der Heijden <alphons@heijden.com>
- *	@version    0.2.9 (last revision Apr, 2022)
- *	@copyright  (c) 2019-2022 Alphons van der Heijden
+ *	@version    2.0.1 (last revision Nov, 2023)
+ *	@copyright  (c) 2019-2023 Alphons van der Heijden
  *	@alias      netproxy, netproxyasync
  * 
  */
@@ -45,8 +45,11 @@
 		var timeouthandler = function ()
 		{
 			if (typeof defaults.onerror === 'function')
-				if (typeof defaults.onerror === 'function')
-					defaults.onerror(Error("TimeOut"), defaults.url, "netproxy");
+			{
+				var error = Error("TimeOut");
+				error.stack = "";
+				defaults.onerror(error, defaults.url, "netproxy");
+			}
 		};
 
 		var callback = function () 
@@ -97,17 +100,24 @@
 			}
 			else // !=200
 			{
+				var stack = "";
 				var message = response;
 				if (typeof response === 'object')
+				{
 					message = response.Message;
+					stack = response.StackTrace;
+				}
+
+				var error = Error(message);
+				error.stack = stack;
 
 				if (typeof defaults.onerror === 'function')
-					defaults.onerror(Error(message), defaults.url, "HTTP:" + httpRequest.status);
+					defaults.onerror(error, defaults.url, "HTTP:" + httpRequest.status);
 			}
 		};
 
 		httpRequest = new XMLHttpRequest();
-		httpRequest.timeout = 1000;
+		httpRequest.timeout = data instanceof FormData ? 0 : 30000;
 		httpRequest.ontimeout = timeouthandler;
 		httpRequest.onloadend = callback;
 		httpRequest.open(defaults.method, defaults.url, defaults.async);
@@ -192,168 +202,5 @@
 			return "";
 		}
 	};
-
-	window.tmpl = function (url, data, outputid)
-	{
-		window.netproxy(url, data, function ()
-		{
-			if (!outputid)
-				return this;
-			var t = document.getElementById(outputid);
-			if (t === null)
-			{
-				alert('Output element does not exist');
-				return;
-			}
-
-			if (t.attributes['type'] === undefined)
-			{
-				t.innerHTML = this.Html;
-			}
-			else
-			{
-				if (t.attributes['type'].value === "text/template")
-				{
-					var el = document.getElementById(outputid + "__");
-					if (el === null)
-					{
-						var newNode = document.createElement("div");
-						newNode.setAttribute("id", outputid + "__");
-						t.parentNode.insertBefore(newNode, t.nextSibling);
-						el = document.getElementById(outputid + "__");
-					}
-					el.innerHTML = window.TemplateHtml(t, this);
-				}
-			}
-		});
-	}
-
-	window.api = function (Url, Datain, Output, Script)
-	{
-		var url = Url;
-		var datain = Datain
-		var output = Output;
-		var js = Script;
-		var jscache;
-
-		if (event !== undefined)
-		{
-			event.preventDefault();
-			var el = event.target;
-			if (el.dataset)
-			{
-				url = url ? url : el.dataset.url;
-				datain = datain ? datain : el.dataset.in;
-				js = js ? js : el.dataset.script;
-
-				if (el.dataset.out)
-					output = el.dataset.out;
-			}
-
-			if (output === undefined)
-				output = el;
-		}
-
-		if (datain)
-		{
-			if (typeof datain === "string")
-				datain = JSON.parse(datain.replace(/\'/g, '\"'));
-		}
-		else
-			datain = null; // get
-
-		window.netproxy(url, datain, function ()
-		{
-			if (js)
-			{
-				if (typeof js === "string")
-				{
-					jscache = new Function(js)
-					jscache.call(this);
-					jscache = undefined;
-				}
-				else
-				{
-					js.call(this);
-				}
-				return;
-			}
-			if (output)
-			{
-				if (output === "null")
-					return;
-
-				if (typeof output === "object")
-				{
-					output.innerHTML = this;
-					return;
-				}
-				var t = document.getElementById(output);
-				if (t === null)
-				{
-					alert('Output element does not exist');
-					return;
-				}
-
-				if (t.attributes['type'] === undefined && this.Template)
-				{
-					if (this.Template)
-					{
-						jscache = new Function(this.Template);
-						if (this.Output)
-							this.Output.innerHTML += jscache.call(this);
-						else
-							t.innerHTML = jscache.call(this);
-						jscache = undefined;
-					}
-					else
-					{
-						t.innerHTML = this.Html;
-					}
-				}
-				else
-				{
-					if (t.attributes['type'].value === "text/template")
-					{
-						var el = document.getElementById(output + "__");
-						if (el === null)
-						{
-							var newNode = document.createElement("div");
-							newNode.setAttribute("id", output + "__");
-							t.parentNode.insertBefore(newNode, t.nextSibling);
-							el = document.getElementById(output + "__");
-						}
-						el.innerHTML = window.TemplateHtml(t, this);
-					}
-					else
-					{
-						alert('Unknown type attribute on output element');
-					}
-				}
-			}
-		});
-	}
-
-	window.rem = function (Url, Datain)
-	{
-		var url = Url;
-		var datain = Datain
-
-		if (datain)
-		{
-			if (typeof datain === "string")
-				datain = JSON.parse(datain.replace(/\'/g, '\"'));
-		}
-		else
-			datain = null; // get
-
-		window.netproxy(url, datain, function ()
-		{
-			var jscache = new Function(this.Template);
-			var html = jscache.call(this);
-			jscache = undefined;
-			return html;
-		});
-	}
 
 })();

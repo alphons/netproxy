@@ -1,6 +1,6 @@
 ﻿//
 // For including script, always use defer for not blocking loading of the page
-// Example: <script src="./netproxydemo.js" defer></script>
+// Example: <script src="./netproxy.js" defer></script>
 // 
 (function ()
 {
@@ -12,6 +12,7 @@ var result;
 
 function PageEvents()
 {
+	// global click event handler, if "id" function exist then execute
 	document.addEventListener("click", function (e)
 	{
 		if (typeof window[e.target.id] === "function")
@@ -33,7 +34,7 @@ function HelloWorld()
 {
 	result.innerText = '';
 
-	netproxy("./api/HelloWorld", null, function ()
+	netproxy("./api/HelloWorld", { name : "alphons" }, function ()
 	{
 		result.innerText = "Result:" + this.Message;
 	});
@@ -44,7 +45,7 @@ async function SomePostAsync()
 {
 	result.innerText = '';
 
-	r = await netproxyasync("./api/SomePost", { model: { user: 'alphons' } });
+	r = await netproxyasync("./api/SomePost", { Model: { User: 'alphons' } });
 
 	result.innerText = "Result:" + r.Message;
 }
@@ -60,7 +61,7 @@ function ProgressHandler(event)
 	result.innerText = "Uploading " + percent + "%";
 }
 
-function StartUpload(e)
+async function StartUpload(e)
 {
 	var file = e.target.files[0];
 
@@ -71,21 +72,20 @@ function StartUpload(e)
  	formData.append("file", file, file.name);
 	formData.append("Form1", "Value1"); // some extra Form data
 
-	netproxy("/api/upload", formData, function ()
-	{
-		result.innerText = "Result:" + this.message;
-	}, window.NetProxyErrorHandler, ProgressHandler);
+	var res = await netproxyasync("/api/upload", formData, ErrorHandler, ProgressHandler);
+
+	result.innerText = "Result:" + res.Length+" " + res.Form1;
 }
 
 function ErrorHandler(error, source, message)
 {
-	alert(error.message+" " + error.stack + " source:" + source + " message:" + message);
+	alert(error.message+" " + error.stack +" source:" + source + " message:" + message);
 }
 async function TestLongRunningAsync()
 {
 	try
 	{
-		r = await netproxyasync("./api/TestLongRunning", { TimeOut: 1000 } , ErrorHandler);
+		r = await netproxyasync("./api/TestLongRunning", { TimeOut: 2000 } , ErrorHandler);
 
 		result.innerText = "Result:" + r.Message;
 	}

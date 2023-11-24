@@ -1,10 +1,28 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿
+using Microsoft.AspNetCore.Mvc;
 
 namespace NetproxySolution.WevTest.Controllers;
 
 public class DefaultController : ControllerBase
 {
-	[HttpGet]
+
+	[HttpPost]
+	[Route("~/api/errorlog")]
+	public async Task<IActionResult> errorlog(
+		string message, 
+		string errormessage, 
+		string errorstack, 
+		string referer, 
+		string source)
+	{
+		await Task.Yield();
+
+		return Ok();
+
+	}
+
+
+	[HttpPost]
 	[Route("~/api/HelloWorld")]
 	public async Task<IActionResult> HelloWorld(string name)
 	{
@@ -17,15 +35,21 @@ public class DefaultController : ControllerBase
 
 	}
 
+	public class ModelClass
+	{
+		public string? User { get; set; }
+	}
+
 	[HttpPost]
 	[Route("~/api/SomePost")]
-	public async Task<IActionResult> SomePost(object model)
+	public async Task<IActionResult> SomePost(ModelClass Model)
 	{
 		await Task.Yield();
 
+		var message = $"yess {Model.User}";
 		return Ok(new
 		{
-			Message = "yess"
+			Message = message
 		});
 
 	}
@@ -43,7 +67,35 @@ public class DefaultController : ControllerBase
 
 	}
 
+	/// <summary>
+	/// Uploads have default a maximum of 30MByte presenting upload example of 2.5GB
+	///
+	/// For IIS Limit maxAllowedContentLength in Web.config (in the root of the app, not in wwwroot content folder!)
+	/// 
+	/// </summary>
+	/// <param name="formFile"></param>
+	/// <returns></returns>
 	[HttpPost]
+	[Route("~/api/Upload")]
+	[RequestSizeLimit(2_500_000_000)]
+	[RequestFormLimits(MultipartBodyLengthLimit = 2_500_000_000)]
+	public async Task<IActionResult> Upload(IFormFile file, string Form1)
+	{
+		if (file == null || file.Length <= 0)
+			return NotFound("File not uploaded");
+
+		var Length = file.Length;
+		using var ms = new MemoryStream(); // FileStream for production
+		await file.CopyToAsync(ms);
+
+		return Ok(new
+		{
+			Length,
+			Form1
+		});
+	}
+
+	[HttpGet]
 	[Route("~/api/NotFound")]
 	public async Task<IActionResult> CanYouFindIt()
 	{
@@ -53,7 +105,7 @@ public class DefaultController : ControllerBase
 
 	}
 
-	[HttpPost]
+	[HttpGet]
 	[Route("~/api/ServerError")]
 	public async Task<IActionResult> ServerError()
 	{
@@ -65,12 +117,11 @@ public class DefaultController : ControllerBase
 			var j = 1 / i;
 			return Ok();
 		}
-		catch(Exception eee)
+		catch (Exception eee)
 		{
-			return NotFound(eee);
+			return NotFound(new { eee.Message, eee.StackTrace } );
 		}
 	}
-
 
 
 }
