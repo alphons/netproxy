@@ -35,7 +35,7 @@ function Test()
 
 	netproxy("./api/helloworld", null, function ()
 	{
-		result.innerText = "Result:" + this.message;
+		result.innerText = "Result:" + this.Message;
 	});
 }
 
@@ -46,7 +46,7 @@ async function TestAsync()
 
 	r = await netproxyasync("./api/post", { model: { user: 'alphons' } });
 
-	result.innerText = "Result:" + r.message;
+	result.innerText = "Result:" + r.Message;
 }
 
 
@@ -57,7 +57,7 @@ function ProgressHandler(event)
 	var total = event.total;
 	if (event.lengthComputable)
 		percent = Math.ceil(position / total * 100);
-	result.innerText = "Uploading " + percent + "%";
+	$id("Result").innerText = "Uploading " + percent + "%";
 }
 
 function StartUpload(e)
@@ -73,68 +73,6 @@ function StartUpload(e)
 
 	netproxy("/api/upload", formData, function ()
 	{
-		result.innerText = "Result:" + this.message;
+		result.innerText = "Result:" + this.Message;
 	}, window.NetProxyErrorHandler, ProgressHandler);
 }
-
-function ErrorHandler(error, source, message)
-{
-	alert(error.message+" " + error.stack + " source:" + source + " message:" + message);
-}
-async function TestLongRunningAsync()
-{
-	try
-	{
-		r = await netproxyasync("./api/longrunning", null, ErrorHandler);
-
-		result.innerText = "Result:" + r.message;
-	}
-	catch (e)
-	{
-		console.log(e);
-	}
-	finally
-	{
-		console.log('We do cleanup here');
-	}
-
-}
-
-async function NotFoundAsync()
-{
-	try
-	{
-		r = await netproxyasync("./api/notfound", null, ErrorHandler);
-
-		result.innerText = "Result:" + r.message;
-	}
-	catch (e)
-	{
-		console.log(e);
-	}
-	finally
-	{
-		console.log('We do cleanup here');
-	}
-
-}
-
-async function ServerErrorAsync()
-{
-	try
-	{
-		r = await netproxyasync("./api/servererror", null, ErrorHandler);
-
-		result.innerText = "Result:" + r.message;
-	}
-	catch (e)
-	{
-		console.log(e);
-	}
-	finally
-	{
-		console.log('We do cleanup here');
-	}
-
-}
-

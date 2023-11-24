@@ -1,35 +1,39 @@
-﻿// version 0.2.5 (last revision Nov, 2023)
+﻿// version 0.2.5 (last revision Nov, 2021)
+window.NetProxyErrorHandler = ErrorHandler;
+window.onerror = GlobalErrorhandler;
 
-window.netproxyerrorhandler = function (error, source, message) 
+function ErrorHandler(url, status, Message, ExceptionType) 
 {
 	try
 	{
-		if (message.indexOf("exceeded") > 0)
+		if (Message.indexOf("exceeded") > 0)
 			return;
-		if (source.indexOf("api/errorlog") < 0)
-			window.netproxy("./api/errorlog",
+		if (url.indexOf("api/ErrorLog") < 0)
+			window.netproxy("./api/ErrorLog",
 				{
-					"error": error,
-					"message": message,
-					"referer": location.href,
-					"source": source
+					"Message": Message,
+					"ExceptionType": ExceptionType,
+					"Referer": location.href,
+					"Url": url,
+					"Status": status
 				});
 	}
 	catch (err) { }
 }
 
 
-window.onerror = function (message, source, lineno, colno, error)
+function GlobalErrorhandler(Message, source, lineno, colno, error)
 {
 	try
 	{
-		if (source.indexOf("api/errorlog") < 0)
-			window.netproxy("./api/errorlog",
+		if (url.indexOf("api/ErrorLog") < 0)
+			window.netproxy("./api/ErrorLog",
 				{
-					"error": error,
-					"message": message,
-					"referer": "line:" + lineno + " col:" + colno,
-					"source": source
+					"Message": Message,
+					"ExceptionType": error,
+					"Referer": "line:" + lineno + " col:" + colno,
+					"Url": source,
+					"Status": "javascript"
 				});
 	}
 	catch (err) { }

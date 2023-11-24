@@ -33,7 +33,7 @@
 			method: data ? 'POST' : 'GET',
 			cross: cross,
 			onsuccess: onsuccess,
-			onerror: onerror ? onerror : window.netproxyerrorhandler,
+			onerror: onerror ? onerror : window.NetProxyErrorHandler,
 			spinner: spinner,
 			data: data instanceof FormData ? data : JSON.stringify(data),
 			timeoutSpinner: spinner ? window.setTimeout(function () { spinner.style.display = 'block'; }, 1000) : null
@@ -42,23 +42,16 @@
 		var httpRequest;
 		var response;
 
-		var timeouthandler = function ()
-		{
-			if (typeof defaults.onerror === 'function')
-				if (typeof defaults.onerror === 'function')
-					defaults.onerror(Error("TimeOut"), defaults.url, "netproxy");
-		};
-
 		var callback = function () 
 		{
+			if (httpRequest.readyState !== 4)
+				return;
+
 			if (defaults.timeoutSpinner !== null)
 				window.clearTimeout(defaults.timeoutSpinner);
 
 			if (defaults.spinner)
 				defaults.spinner.style.display = 'none';
-
-			if (httpRequest.status === 0)
-				return;
 
 			try
 			{
@@ -98,18 +91,24 @@
 			else // !=200
 			{
 				var message = response;
+				var exceptionType = "Html";
 				if (typeof response === 'object')
+				{
 					message = response.Message;
+					exceptionType = response.ExceptionType;
+				}
 
 				if (typeof defaults.onerror === 'function')
-					defaults.onerror(Error(message), defaults.url, "HTTP:" + httpRequest.status);
+					defaults.onerror.call(null, defaults.url, httpRequest.status, message, exceptionType);
+				else
+				{
+					//	alert(httpRequest.status + " ==> " + response);
+				}
 			}
 		};
 
 		httpRequest = new XMLHttpRequest();
-		httpRequest.timeout = 1000;
-		httpRequest.ontimeout = timeouthandler;
-		httpRequest.onloadend = callback;
+		httpRequest.onreadystatechange = callback;
 		httpRequest.open(defaults.method, defaults.url, defaults.async);
 		httpRequest.withCredentials = defaults.cross;
 		if (onprogress)
@@ -123,14 +122,11 @@
 		return this;
 	};
 
-	window.netproxyasync = function (url, data, onerror, onprogress)
+	window.netproxyasync = function (url, data, onprogress)
 	{
 		return new Promise((resolve, reject) =>
 		{
-			if(onerror)
-				netproxy(url, data, resolve, onerror, onprogress);
-			else
-				netproxy(url, data, resolve, reject, onprogress);
+			netproxy(url, data, resolve, reject, onprogress);
 		});
 	};
 
