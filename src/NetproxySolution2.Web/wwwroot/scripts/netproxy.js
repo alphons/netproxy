@@ -55,9 +55,6 @@
 			if (defaults.spinner)
 				defaults.spinner.style.display = 'none';
 
-			if (httpRequest.status === 0)
-				return;
-
 			try
 			{
 				response = JSON.parse(httpRequest.response);
