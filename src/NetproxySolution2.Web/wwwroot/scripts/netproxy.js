@@ -3,8 +3,8 @@
  *	@name		pure-dom netproxy and template and api
  * 
  *	@author     Alphons van der Heijden <alphons@heijden.com>
- *	@version    2.0.1 (last revision Nov, 2023)
- *	@copyright  (c) 2019-2023 Alphons van der Heijden
+ *	@version    2.0.3 (last revision Nov, 2024)
+ *	@copyright  (c) 2019-2024 Alphons van der Heijden
  *	@alias      netproxy, netproxyasync
  * 
  */
@@ -69,7 +69,7 @@
 				response = httpRequest.response;
 			}
 
-			if (httpRequest.status === 200)
+			if (httpRequest.status >= 200 && httpRequest.status <= 299)
 			{
 				var header = httpRequest.getResponseHeader('Content-Disposition');
 				if (header)
