@@ -5,7 +5,7 @@ VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetproxySolution.Web", "NetproxySolution.Web\NetproxySolution.Web.csproj", "{F6876641-C6B3-4D7F-9293-932A9FFCB2A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetproxySolution2.Web", "NetproxySolution2.Web\NetproxySolution2.Web.csproj", "{CB5A484C-8720-42F0-AD4F-229C23A4029F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetproxySolution2.Web", "NetproxySolution2.Web\NetproxySolution2.Web.csproj", "{CB5A484C-8720-42F0-AD4F-229C23A4029F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

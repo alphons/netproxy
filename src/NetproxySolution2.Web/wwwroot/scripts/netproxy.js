@@ -84,10 +84,17 @@
 
 				if (typeof defaults.onsuccess === 'function')
 				{
-					if (response.d)
-						defaults.onsuccess.call(response.d, response.d);
+					if (httpRequest.status === 204)
+					{
+						defaults.onsuccess.call(null, null);
+					}
 					else
-						defaults.onsuccess.call(response, response);
+					{
+						if (response.d)
+							defaults.onsuccess.call(response.d, response.d);
+						else
+							defaults.onsuccess.call(response, response);
+					}
 				}
 			}
 			else // !=200

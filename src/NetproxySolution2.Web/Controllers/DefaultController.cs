@@ -6,6 +6,16 @@ namespace NetproxySolution.WevTest.Controllers;
 public class DefaultController : ControllerBase
 {
 
+	[HttpGet]
+	[Route("~/api/NoContent")]
+	public async Task<IActionResult> NoContentAsync()
+	{
+		await Task.Yield();
+
+		return Ok(null);
+
+	}
+
 	[HttpPost]
 	[Route("~/api/errorlog")]
 	public async Task<IActionResult> errorlog(

@@ -138,3 +138,15 @@ async function ServerErrorAsync()
 
 }
 
+async function NoContentAsync()
+{
+	var nocontent = await netproxyasync("./api/NoContent");
+	if (nocontent == null)
+	{
+		result.innerText = 'no content has returned null thats good';
+	}
+	else
+	{
+		result.innerText = 'Error: no content should return null';
+	}
+}
