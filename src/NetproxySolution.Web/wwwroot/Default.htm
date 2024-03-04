@@ -7,17 +7,26 @@
 
 	<link href="css/netproxyspinner.css" rel="stylesheet" />
 	<script src="scripts/macros.js" defer></script>
-	<script src="scripts/netproxy.js" defer></script>
+	<script src="scripts/netproxy.js?2" defer></script>
+	<script src="scripts/netproxyerrorhandler.js" defer></script>
 
-	<link href="Default.css" rel="stylesheet" />
-	<script src="Default.js" defer></script>
+	<link href="Default.css?1" rel="stylesheet" />
+	<script src="Default.js?2" defer></script>
 </head>
 <body>
 	<div id="Result"></div>
 
-	<div><span id="Test" class="ui-btn">Test (get)</span></div>
+	<div><span id="HelloWorld" class="ui-btn">HelloWorld (post)</span></div>
 
-	<div><span id="TestAsync" class="ui-btn">TestAsync (post)</span></div>
+	<div><span id="SomePostAsync" class="ui-btn">SomePostAsync (post)</span></div>
+
+	<div><span id="TestLongRunningAsync" class="ui-btn">TestLongRunningAsync (get)</span></div>
+
+	<div><span id="ServerErrorAsync" class="ui-btn">ServerErrorAsync (get)</span></div>
+
+	<div><span id="NotFoundAsync" class="ui-btn">NotFoundAsync (get)</span></div>
+
+	<div><span id="NoContentAsync" class="ui-btn">NoContent (get)</span></div>	
 
 	<div id="UploadExample">
 		<label class="UploadImage ui-btn" for="UploadImage">Upload a File</label>
