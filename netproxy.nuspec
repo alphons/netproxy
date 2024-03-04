@@ -11,7 +11,8 @@
 		<!-- <icon>icon.png</icon> -->
 		<projectUrl>https://github.com/alphons/netproxy</projectUrl>
 		<repository type="git" url="https://github.com/alphons/netproxy.git" branch="master" />
-		<description>netproxy is a lite framework for posting multiparameter data in json format to .net core controllers</description>
+		<description>netproxy is a lite framework for posting multiparameter data in json format to 
+		.net core controllers (including uploads and progress events)</description>
 		<dependencies>
 			<dependency id="Mvc.ModelBinding.MultiParameter" version="1.1.8" />
 		</dependencies>
@@ -26,8 +27,8 @@
 	<files>
 		<file src="README.md" target="docs\" />
 
-		<file src="src\NetproxySolution2.Web\wwwroot\**.*"
-			  exclude="src\NetproxySolution2.Web\wwwroot\*.*"
+		<file src="src\NetproxySolution.Web\wwwroot\**.*"
+			  exclude="src\NetproxySolution.Web\wwwroot\*.*"
 			  target="contentFiles\any\any\wwwroot" />
 	</files>
 </package>
