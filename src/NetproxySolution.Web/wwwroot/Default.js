@@ -8,7 +8,8 @@
 	Init();
 })();
 
-var result;
+const result = $id('result');
+const progress = $id('progress');
 
 function PageEvents()
 {
@@ -27,7 +28,6 @@ function PageEvents()
 
 function Init()
 {
-	result = $id('Result');
 }
 
 function HelloWorld()
@@ -58,7 +58,7 @@ function ProgressHandler(event)
 	var total = event.total;
 	if (event.lengthComputable)
 		percent = Math.ceil(position / total * 100);
-	result.innerText = "Uploading " + percent + "%";
+	progress.innerText = "Uploading " + percent + "%";
 }
 
 async function StartUpload(e)
@@ -72,20 +72,16 @@ async function StartUpload(e)
  	formData.append("file", file, file.name);
 	formData.append("Form1", "Value1"); // some extra Form data
 
-	var res = await netproxyasync("/api/upload", formData, ErrorHandler, ProgressHandler);
+	var res = await netproxyasync("/api/upload", formData, ProgressHandler);
 
-	result.innerText = "Result:" + res.Length+" " + res.Form1;
+	progress.innerText = "Bytes:" + res.Length+" Some var:" + res.Form1;
 }
 
-function ErrorHandler(error, source, message)
-{
-	alert(error.message+" " + error.stack +" source:" + source + " message:" + message);
-}
 async function TestLongRunningAsync()
 {
 	try
 	{
-		r = await netproxyasync("./api/TestLongRunning", { TimeOut: 2000 } , ErrorHandler);
+		r = await netproxyasync("./api/TestLongRunning", { TimeOut: 2000 } );
 
 		result.innerText = "Result:" + r.Message;
 	}
@@ -104,7 +100,7 @@ async function NotFoundAsync()
 {
 	try
 	{
-		r = await netproxyasync("./api/NotFound", null, ErrorHandler);
+		r = await netproxyasync("./api/NotFound");
 
 		result.innerText = "Result:" + r.Message;
 	}
@@ -119,11 +115,11 @@ async function NotFoundAsync()
 
 }
 
-async function ServerErrorAsync()
+async function ReturnServerErrorAsync()
 {
 	try
 	{
-		r = await netproxyasync("./api/ServerError", null, ErrorHandler);
+		r = await netproxyasync("./api/ReturnServerError");
 
 		result.innerText = "Result:" + r.message;
 	}
@@ -138,6 +134,26 @@ async function ServerErrorAsync()
 
 }
 
+async function MakeServerErrorAsync()
+{
+	try
+	{
+		r = await netproxyasync("./api/MakeServerError");
+
+		result.innerText = "Result:" + r.message;
+	}
+	catch (e)
+	{
+		console.log(e);
+	}
+	finally
+	{
+		console.log('We do cleanup here');
+	}
+
+}
+
+
 async function NoContentAsync()
 {
 	var nocontent = await netproxyasync("./api/NoContent");
@@ -149,4 +165,9 @@ async function NoContentAsync()
 	{
 		result.innerText = 'Error: no content should return null';
 	}
+}
+
+function ClientError()
+{
+	var i = j.RuntimeError;
 }

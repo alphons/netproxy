@@ -3,7 +3,7 @@
  *	@name		pure-dom netproxy and template and api
  * 
  *	@author     Alphons van der Heijden <alphons@heijden.com>
- *	@version    2.0.4 (last revision Jan, 2024)
+ *	@version    2.1.0 (last revision Mar, 2024)
  *	@copyright  (c) 2019-2024 Alphons van der Heijden
  *	@alias      netproxy, netproxyasync
  * 
@@ -28,10 +28,10 @@
 
 		var defaults =
 		{
-			url : url,
+			url: url,
 			onsuccess: onsuccess,
-			onerror: onerror ? onerror : window.netproxyerrorhandler,
-			spinner : spinner,
+			onerror: onerror,
+			spinner: spinner,
 			timeoutSpinner: spinner ? window.setTimeout(function () { spinner.style.display = 'block'; }, 1000) : null
 		};
 
@@ -39,9 +39,9 @@
 		{
 			if (typeof defaults.onerror === 'function')
 			{
-				var error = Error("TimeOut");
-				error.stack = "";
-				defaults.onerror(error, defaults.url, "netproxy");
+				var error = new Error("TimeOut");
+				error.stack = defaults.url + " " + httpRequest.timeout + "mS (client timeout)";
+				defaults.onerror.call(error, error);// defaults.url, "netproxy");
 			}
 		};
 
@@ -97,21 +97,15 @@
 					}
 				}
 			}
-			else // !=200
+			else // != 200
 			{
-				var stack = "";
-				var message = response;
-				if (typeof response === 'object')
-				{
-					message = response.Message;
-					stack = response.StackTrace;
-				}
-
-				var error = Error(message);
-				error.stack = stack;
+				var error = new Error("netproxy");
+				error.stack = defaults.url + " " + httpRequest.status + " (" + response + ")";
 
 				if (typeof defaults.onerror === 'function')
-					defaults.onerror(error, defaults.url, "HTTP:" + httpRequest.status);
+					defaults.onerror.call(error, error);
+				else
+					throw error;
 			}
 		};
 
@@ -132,15 +126,13 @@
 		return this;
 	};
 
-	window.netproxyasync = function (url, data, onerror, onprogress)
+	window.netproxyasync = function (url, data, onprogress)
 	{
-		return new Promise((resolve, reject) =>
+		const promis = new Promise(function (resolve, reject)
 		{
-			if(onerror)
-				netproxy(url, data, resolve, onerror, onprogress);
-			else
-				netproxy(url, data, resolve, reject, onprogress);
+			netproxy(url, data, resolve, reject, onprogress);
 		});
+		return promis;
 	};
 
 	Element.prototype.Template = function (template, data, append)

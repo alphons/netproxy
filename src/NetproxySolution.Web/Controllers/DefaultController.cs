@@ -1,7 +1,7 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
 
-namespace NetproxySolution.WevTest.Controllers;
+namespace NetproxySolution.Web.Controllers;
 
 public class DefaultController : ControllerBase
 {
@@ -13,21 +13,6 @@ public class DefaultController : ControllerBase
 		await Task.Yield();
 
 		return Ok(null);
-
-	}
-
-	[HttpPost]
-	[Route("~/api/errorlog")]
-	public async Task<IActionResult> errorlog(
-		string message, 
-		string errormessage, 
-		string errorstack, 
-		string referer, 
-		string source)
-	{
-		await Task.Yield();
-
-		return Ok();
 
 	}
 
@@ -116,8 +101,8 @@ public class DefaultController : ControllerBase
 	}
 
 	[HttpGet]
-	[Route("~/api/ServerError")]
-	public async Task<IActionResult> ServerError()
+	[Route("~/api/ReturnServerError")]
+	public async Task<IActionResult> ReturnServerErrorAsync()
 	{
 		await Task.Yield();
 
@@ -129,10 +114,20 @@ public class DefaultController : ControllerBase
 		}
 		catch (Exception eee)
 		{
-			return NotFound(new { eee.Message, eee.StackTrace } );
+			return StatusCode(500, new { eee.Message, eee.StackTrace } );
 		}
 	}
 
+	[HttpGet]
+	[Route("~/api/MakeServerError")]
+	public async Task<IActionResult> MakeServerErrorAsync()
+	{
+		await Task.Yield();
+
+		var i = 0;
+		var j = 1 / i;
+		return Ok();
+	}
 
 }
 
