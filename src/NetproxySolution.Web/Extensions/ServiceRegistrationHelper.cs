@@ -2,7 +2,7 @@
 using System.Diagnostics;
 
 
-namespace NetproxySolution.Web.Helpers;
+namespace NetproxySolution.Web.Extensions;
 
 [AttributeUsage(AttributeTargets.Class)]
 public class ScopedRegistrationAttribute : Attribute { }

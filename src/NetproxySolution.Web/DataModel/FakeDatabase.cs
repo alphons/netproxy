@@ -1,11 +1,12 @@
-﻿using NetproxySolution.Web.Helpers;
+﻿
+
+using NetproxySolution.Web.Extensions;
 
 namespace NetproxySolution.Web.DataModel;
 
 public interface IFakeDatabase
 {
 	List<Error> Errors { get; set; }
-
 	Task<int> SaveChangesAsync();
 }
 

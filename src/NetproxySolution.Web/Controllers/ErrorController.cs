@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Diagnostics;
 
 using NetproxySolution.Web.Converters;
 using NetproxySolution.Web.DataModel;
-using NetproxySolution.Web.Helpers;
 using NetproxySolution.Web.Extensions;
 
 namespace NetproxySolution.Web.LogicControllers;
@@ -17,15 +16,21 @@ public interface IErrorController
 
 // ScopedRegistration, even it inherits Controller or ControllerBase (http error 405)
 [ScopedRegistration]
-public class ErrorController(IFakeDatabase fakeDatabase) : Controller, IErrorController
+public class ErrorController(
+	IFakeDatabase fakeDatabase,
+	IHttpContextAccessor httpContextAccessor) : Controller, IErrorController
 {
 	private readonly IFakeDatabase db = fakeDatabase;
+	private readonly IHttpContextAccessor accessor = httpContextAccessor;
+
 	public async Task<int> LogErrorAsync(int errorCode, string path, string message)
 	{
 		db.Errors.Add(new Error()
 		{
-			IpAdres = HttpContext2.IpAddress,
-			SessionId = HttpContext2.SessionId,
+			IpAdres = accessor.HttpContext?.Connection.RemoteIpAddress?.ToString() ?? "0.0.0.0",
+			SessionId = accessor.HttpContext?.Session.Id ?? "session-unknown",
+			Referer = accessor.HttpContext?.Request.Headers.Referer.ToString() ?? "referer-unknown",
+			UserAgent = accessor.HttpContext?.Request.Headers.UserAgent.ToString() ?? "user-agent-unknown",
 			ErrorCode = errorCode,
 			Path = path,
 			Message = message
@@ -68,7 +73,7 @@ public class ErrorController(IFakeDatabase fakeDatabase) : Controller, IErrorCon
 			}
 		}
 
-		var status = await LogErrorAsync(errorCode, path, message);
+		_ = await LogErrorAsync(errorCode, path, message);
 
 		//var html = message.Replace(@"\\", @"\").Replace(@"\r\n", "<br/>");
 
@@ -94,7 +99,7 @@ public class ErrorController(IFakeDatabase fakeDatabase) : Controller, IErrorCon
 			Referer = referer
 		});
 
-		var status = await LogErrorAsync(1, source, message);
+		_ = await LogErrorAsync(1, source, message);
 
 		return Ok();
 

@@ -5,29 +5,25 @@ namespace NetproxySolution.Web.Controllers;
 
 public class DefaultController : ControllerBase
 {
-
-	[HttpGet]
-	[Route("~/api/NoContent")]
-	public async Task<IActionResult> NoContentAsync()
-	{
-		await Task.Yield();
-
-		return Ok(null);
-
-	}
-
-
-	[HttpPost]
-	[Route("~/api/HelloWorld")]
+	[HttpPost("~/api/HelloWorld")]
 	public async Task<IActionResult> HelloWorld(string name)
 	{
 		await Task.Yield();
+
+		HttpContext.Session.SetString("name", name);
 
 		return Ok(new
 		{
 			Message = $"{name} says Hello, World!"
 		});
+	}
 
+	[HttpGet("~/api/NoContent")]
+	public async Task<IActionResult> NoContentAsync()
+	{
+		await Task.Yield();
+
+		return Ok(null);
 	}
 
 	public class ModelClass
@@ -35,8 +31,7 @@ public class DefaultController : ControllerBase
 		public string? User { get; set; }
 	}
 
-	[HttpPost]
-	[Route("~/api/SomePost")]
+	[HttpPost("~/api/SomePost")]
 	public async Task<IActionResult> SomePost(ModelClass Model)
 	{
 		await Task.Yield();
@@ -46,11 +41,9 @@ public class DefaultController : ControllerBase
 		{
 			Message = message
 		});
-
 	}
 
-	[HttpPost]
-	[Route("~/api/TestLongRunning")]
+	[HttpPost("~/api/TestLongRunning")]
 	public async Task<IActionResult> TestLongRunning(int TimeOut)
 	{
 		await Task.Delay(TimeOut);
@@ -70,8 +63,7 @@ public class DefaultController : ControllerBase
 	/// </summary>
 	/// <param name="formFile"></param>
 	/// <returns></returns>
-	[HttpPost]
-	[Route("~/api/Upload")]
+	[HttpPost("~/api/Upload")]
 	[RequestSizeLimit(2_500_000_000)]
 	[RequestFormLimits(MultipartBodyLengthLimit = 2_500_000_000)]
 	public async Task<IActionResult> Upload(IFormFile file, string Form1)
@@ -90,8 +82,7 @@ public class DefaultController : ControllerBase
 		});
 	}
 
-	[HttpGet]
-	[Route("~/api/NotFound")]
+	[HttpGet("~/api/NotFound")]
 	public async Task<IActionResult> CanYouFindIt()
 	{
 		await Task.Yield();
@@ -100,8 +91,7 @@ public class DefaultController : ControllerBase
 
 	}
 
-	[HttpGet]
-	[Route("~/api/ReturnServerError")]
+	[HttpGet("~/api/ReturnServerError")]
 	public async Task<IActionResult> ReturnServerErrorAsync()
 	{
 		await Task.Yield();
@@ -118,8 +108,7 @@ public class DefaultController : ControllerBase
 		}
 	}
 
-	[HttpGet]
-	[Route("~/api/MakeServerError")]
+	[HttpGet("~/api/MakeServerError")]
 	public async Task<IActionResult> MakeServerErrorAsync()
 	{
 		await Task.Yield();
