@@ -105,4 +105,17 @@ public class ErrorController(
 
 	}
 
+	[HttpPost("~/api/ListErrors")]
+
+	public IActionResult ListErrors(string Search, int Page, int PageLength)
+	{
+		var list = db.Errors.Where(x => x.Message.Contains(Search)).Skip(Page *  PageLength).Take(PageLength).ToList();
+
+		return Ok(new
+		{
+			List = list
+		});
+	}
+
+
 }

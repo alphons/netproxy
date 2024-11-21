@@ -181,3 +181,33 @@ button.ui-btn-icon-right, input.ui-btn-icon-right
 }
 
 
+.errortable
+{
+	border-collapse: collapse;
+}
+
+	.errortable tr:nth-child(even)
+	{
+		background-color: #f2f2f2;
+	}
+
+	.errortable tr th, td
+	{
+		border: solid 1px #909090;
+		padding: 10px;
+		max-width: 300px;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
+	}
+
+	.errortable thead
+	{
+		background-color: #9292ff;
+	}
+
+	.errortable tbody tr:hover
+	{
+		background-color: #d2d2d2;
+		cursor: pointer;
+	}

@@ -7,13 +7,15 @@
 
 	<link href="css/netproxyspinner.css" rel="stylesheet" />
 	<script src="scripts/macros.js" defer></script>
-	<script src="scripts/netproxy.js" defer></script>
+	<script src="scripts/netproxy3.js" defer></script>
 	<script src="scripts/errorhandler.js" defer></script>
 
 	<link href="Default.css" rel="stylesheet" />
 	<script src="Default.js" defer></script>
 </head>
 <body>
+	<img src="images/netproxyspinner.gif" id="netproxyspinner" />
+
 	<div id="result"></div>
 
 	<div><span id="HelloWorld" class="ui-btn">HelloWorld (post)</span></div>
@@ -38,6 +40,46 @@
 
 	<div><span id="ClientError" class="ui-btn">ClientError (reports to server)</span></div>
 
-	<img src="images/netproxyspinner.gif" id="netproxyspinner" />
+	<div><span id="ListErrors" class="ui-btn">List Errors</span></div>
+
+	<script type="text/template" id="templateerrors">
+		<table class="errortable">
+			<thead>
+				<tr>
+					<th>Time</th>
+					<th>Code</th>
+					<th>ErrorMessage</th>
+					<th>ErrorStack</th>
+					<th>Event</th>
+					<th>Path</th>
+					<th>Source</th>
+					<th>IpAddress</th>
+					<th>Referer</th>
+					<th>UserAgent</th>
+					<th>SessionId</th>
+				</tr>
+			</thead>
+			<tbody>
+				{{ for(i=0;i<this.List.length;i++) { }}
+				{{ var item = this.List[i]; }}
+				<tr data-id="{{=item.Id}}">
+					<td>{{=item.Time}}</td>
+					<td>{{=item.ErrorCode}}</td>
+					<td>{{=item.ErrorMessage}}</td>
+					<td>{{=item.ErrorStack}}</td>
+					<td>{{=item.Event}}</td>
+					<td>{{=item.Path}}</td>
+					<td>{{=item.Source}}</td>
+					<td>{{=item.IpAddress}}</td>
+					<td>{{=item.Referer}}</td>
+					<td>{{=item.UserAgent}}</td>
+					<td>{{=item.SessionId}}</td>
+				</tr>
+				{{ } }}
+			</tbody>
+		</table>
+	</script>
+
+	<pre id="preoutput"></pre>
 </body>
 </html>

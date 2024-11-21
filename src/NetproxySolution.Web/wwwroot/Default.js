@@ -171,3 +171,33 @@ function ClientError()
 {
 	var i = j.RuntimeError;
 }
+
+async function ListErrors()
+{
+	var search = '';
+	var page = 0;
+	var pagelength = 10;
+
+	var response = await netproxyasync("/api/ListErrors", { Search: search, Page: page, PageLength: pagelength });
+
+	result.Template(templateerrors, response, false);
+}
+
+function EscapeJson(s)
+{
+	return s
+		.replaceAll('\\u0022', '"')
+		.replaceAll('\\u0026', '&')
+		.replaceAll('\\u0027', '"')
+		.replaceAll('\\u003C', '<')
+		.replaceAll('\\u003E', '>')
+		.replaceAll('\\u0060', '`')
+		.replaceAll('\\r\\n', '\n')
+		.replaceAll('\\n', '\n')
+		.replaceAll('\\\\', '\\');
+}
+
+function ShowJson(tr)
+{
+	preoutput.innerHTML = "<h3>" + tr.qsall("td")[2].innerHTML + "</h3>" + EscapeJson(tr.qsall("td")[3].innerHTML);
+}
