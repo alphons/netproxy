@@ -3,7 +3,7 @@
  *	@name		pure-dom netproxy and template and api
  * 
  *	@author     Alphons van der Heijden <alphons@heijden.com>
- *	@version    2.1.0 (last revision Mar, 2024)
+ *	@version    3.0.0 (last revision Nov, 2024)
  *	@copyright  (c) 2019-2024 Alphons van der Heijden
  *	@alias      netproxy, netproxyasync
  * 
@@ -14,127 +14,129 @@
 {
 	'use strict';
 
+	// Escape functie om XSS te voorkomen
+	function escapeHtml(unsafe)
+	{
+		if (Array.isArray(unsafe))
+			return unsafe.map(item => escapeHtml(item)).join(', ');
+		if (unsafe === null || unsafe === undefined)
+			return '';
+		return String(unsafe).replace(/[&<>"']/g, function (match)
+		{
+			return {
+				'&': '&amp;',
+				'<': '&lt;',
+				'>': '&gt;',
+				'"': '&quot;',
+				"'": '&#39;'
+			}[match];
+		});
+	}
+
+	// netproxy functionaliteit
 	window.netproxy = function (url, data, onsuccess, onerror, onprogress)
 	{
-		if (typeof window.XMLHttpRequest === 'undefined')
-			return;
-
 		var spinner = document.getElementById("netproxyspinner");
-
 		if (typeof remote !== 'undefined')
 			url = remote + url;
-
-		var httpRequest;
-
-		var defaults =
+		if (spinner)
+			var timeoutSpinner = setTimeout(() => spinner.style.display = 'block', 1000);
+		var xhr = new XMLHttpRequest();
+		xhr.open(data ? 'POST' : 'GET', url, true);
+		xhr.withCredentials = url.indexOf(window.location.host) < 0 && url[0] !== '/';
+		if (!(data instanceof FormData))
+			xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+		if (data instanceof FormData)
+			xhr.timeout = 30000;
+		xhr.onloadend = function ()
 		{
-			url: url,
-			onsuccess: onsuccess,
-			onerror: onerror,
-			spinner: spinner,
-			timeoutSpinner: spinner ? window.setTimeout(function () { spinner.style.display = 'block'; }, 1000) : null
-		};
-
-		var timeouthandler = function ()
-		{
-			if (typeof defaults.onerror === 'function')
+			if (timeoutSpinner)
+				clearTimeout(timeoutSpinner);
+			if (spinner)
+				spinner.style.display = 'none';
+			if (xhr.status === 204)
 			{
-				var error = new Error("TimeOut");
-				error.stack = defaults.url + " " + httpRequest.timeout + "mS (client timeout)";
-				defaults.onerror.call(error, error);// defaults.url, "netproxy");
+				if (typeof onsuccess === 'function')
+					onsuccess.call(null, null);
+				return;
 			}
-		};
-
-		var loadendhandler = function () 
-		{
-			var response;
-
-			if (defaults.timeoutSpinner !== null)
-				window.clearTimeout(defaults.timeoutSpinner);
-
-			if (defaults.spinner)
-				defaults.spinner.style.display = 'none';
-
-			try
+			if (xhr.status >= 200 && xhr.status < 300)
 			{
-				response = JSON.parse(httpRequest.response);
-				if (typeof response !== "object")
-					response = httpRequest.response;
-			}
-			catch (e)
-			{
-				response = httpRequest.response;
-			}
-
-			if (httpRequest.status >= 200 && httpRequest.status <= 299)
-			{
-				var header = httpRequest.getResponseHeader('Content-Disposition');
-				if (header)
+				const contentDisposition = xhr.getResponseHeader('Content-Disposition');
+				if (contentDisposition && contentDisposition.includes('attachment'))
 				{
-					var a = document.createElement('a');
-					a.download = header.split('filename="')[1].split('"')[0];
-					a.rel = 'noopener' // tabnabbing
-					// a.target = '_blank'
-					const blob = new Blob([httpRequest.response], { type: 'application/octet-stream' });
-					a.href = URL.createObjectURL(blob)
-					setTimeout(function () { URL.revokeObjectURL(a.href) }, 4E4) // 40s
-					setTimeout(function () { a.click(); }, 0)
+					const blob = new Blob([xhr.response], { type: xhr.getResponseHeader('Content-Type') });
+					const filename = contentDisposition.split('filename="')[1]?.split('"')[0] || 'download';
+					const a = document.createElement('a');
+					a.href = URL.createObjectURL(blob);
+					a.download = filename;
+					a.rel = 'noopener';
+					document.body.appendChild(a);
+					a.click();
+					document.body.removeChild(a);
+					setTimeout(() => URL.revokeObjectURL(a.href), 40000);
 					return;
 				}
-
-				if (typeof defaults.onsuccess === 'function')
+				try
 				{
-					if (httpRequest.status === 204)
+					const parsedResponse = JSON.parse(xhr.responseText);
+					if (typeof onsuccess === 'function')
+						onsuccess.call(parsedResponse, parsedResponse);
+					return;
+				}
+				catch (e)
+				{
+					const error = new Error("Response kon niet worden geparsed.");
+					if (typeof onerror === 'function')
 					{
-						defaults.onsuccess.call(null, null);
+						onerror.call(xhr, error);
+						return;
 					}
-					else
-					{
-						if (response.d)
-							defaults.onsuccess.call(response.d, response.d);
-						else
-							defaults.onsuccess.call(response, response);
-					}
+					throw error;
 				}
 			}
-			else // != 200
+			if (xhr.status >= 400)
 			{
-				var error = new Error("netproxy");
-				error.stack = defaults.url + " " + httpRequest.status + " (" + response + ")";
-
-				if (typeof defaults.onerror === 'function')
-					defaults.onerror.call(error, error);
-				else
-					throw error;
+				const error = new Error(`HTTP error! Status: ${xhr.status}`);
+				if (typeof onerror === 'function')
+				{
+					onerror.call(xhr, error);
+					return;
+				}
+				throw error;
+			}
+			if (xhr.status === 0)
+			{
+				const error = xhr.timedout
+					? new Error(`Timeout van ${xhr.timeout}ms overschreden`)
+					: new Error("Netwerkfout of verzoek geannuleerd");
+				if (typeof onerror === 'function')
+				{
+					onerror.call(xhr, error);
+					return;
+				}
+				throw error;
 			}
 		};
-
-		httpRequest = new XMLHttpRequest();
-		httpRequest.timeout = data instanceof FormData ? 0 : 30000;
-		httpRequest.ontimeout = timeouthandler;
-		httpRequest.onloadend = loadendhandler;
-		httpRequest.open(data ? 'POST' : 'GET', url, true);
-		httpRequest.withCredentials = url.indexOf(window.location.host) < 0 && url[0] !== '/';
 		if (onprogress)
 		{
-			httpRequest.addEventListener('progress', onprogress, false);
-			httpRequest.upload.addEventListener('progress', onprogress, false);
+			xhr.upload.onprogress = onprogress;
+			xhr.onprogress = onprogress;
 		}
-		if (!(data instanceof FormData))
-			httpRequest.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
-		httpRequest.send(data instanceof FormData ? data : JSON.stringify(data));
-		return this;
+		xhr.send(data instanceof FormData
+			? data
+			: JSON.stringify(data));
 	};
 
 	window.netproxyasync = function (url, data, onprogress)
 	{
-		const promis = new Promise(function (resolve, reject)
+		return new Promise((resolve, reject) =>
 		{
 			netproxy(url, data, resolve, reject, onprogress);
 		});
-		return promis;
 	};
 
+	// Template functionaliteit
 	Element.prototype.Template = function (template, data, append)
 	{
 		var strHtml = window.TemplateHtml(template, data);
@@ -143,31 +145,31 @@
 			var temp = document.createElement("span");
 			this.insertAdjacentElement('beforeend', temp);
 			temp.outerHTML = strHtml;
-			return this;
 		}
 		else
-			return this.innerHTML = strHtml;
+		{
+			this.innerHTML = strHtml;
+		}
 	};
 
 	window.TemplateHtml = function (template, data)
 	{
 		try
 		{
-			var element = typeof template === "string" ?
-				document.getElementById(template) : template;
+			var element = typeof template === "string" ? document.getElementById(template) : template;
 			if (!element)
-				return null;
+				throw new Error("Template niet gevonden.");
 			if (!element.jscache)
 			{
 				var html = element.innerHTML.replace(/[\t\r\n]/g, " ");
-				var js = "var _='';";
+				var js = "let _='';";
 				var direct, intI, intJ = 0;
 				while (intJ < html.length)
 				{
 					intI = html.indexOf("{{", intJ);
 					if (intI < 0)
 						break;
-					js += "_+='" + html.substring(intJ, intI).replace(/\'/g, "\\'") + "';";
+					js += `_+='${html.substring(intJ, intI).replace(/'/g, "\\'")}';`;
 					intJ = intI + 2;
 					direct = (html[intJ] === "=");
 					if (direct)
@@ -175,23 +177,21 @@
 					intI = html.indexOf("}}", intJ);
 					if (intI < 0)
 						break;
-					if (direct)
-						js += "_+=";
-					js += html.substring(intJ, intI).trim() + ";";
+					js += direct ? `_+=escapeHtml(${html.substring(intJ, intI).trim()});` : html.substring(intJ, intI).trim() + ";";
 					intJ = intI + 2;
 				}
-				js += "_+='" + html.substring(intJ).replace(/\'/g, "\\'") + "'; return _;";
-				element.jscache = new Function(js);
+				js += `_+='${html.substring(intJ).replace(/'/g, "\\'")}'; return _;`;
+				element.jscache = new Function('escapeHtml', 'data', js);
 				element.innerHTML = '';
 			}
-			return element.jscache.call(data);
+			return element.jscache.call(data, escapeHtml);
 		}
 		catch (err)
 		{
-			if (console)
-				console.log("Error: " + element.outerHTML + ": " + err.message);
+			console.error("Template fout:", err.message);
 			return "";
 		}
 	};
-
 })();
+
+

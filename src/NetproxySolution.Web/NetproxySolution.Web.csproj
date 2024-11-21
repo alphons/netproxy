@@ -37,7 +37,7 @@
     <Content Update="wwwroot\scripts\macros.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\scripts\netproxy.js">
+    <Content Update="wwwroot\scripts\netproxy2.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
