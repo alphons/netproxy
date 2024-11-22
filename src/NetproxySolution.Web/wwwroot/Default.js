@@ -13,11 +13,15 @@ const progress = $id('progress');
 
 function PageEvents()
 {
-	// global click event handler, if "id" function exist then execute
-	document.addEventListener("click", function (e)
+	// global click event handler, if "id" function exist then execute sync or async
+	document.addEventListener("click", async function (e)
 	{
-		if (typeof window[e.target.id] === "function")
-			window[e.target.id].call(e, e);
+		if (e.target.id && typeof window[e.target.id] === "function")
+		{
+			const result = window[e.target.id].call(e, e);
+			if (result instanceof Promise)
+				await result;
+		}
 	});
 
 	$id("UploadExample").on("change", function (e)

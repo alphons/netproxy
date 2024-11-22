@@ -1,145 +1,101 @@
 ﻿// version 1.3 2020-08-30 (C) AAB van der Heijden
+// Updated 2.0 2024-11-22
+const $ = document.querySelector.bind(document);
+const $$ = document.querySelectorAll.bind(document);
+const $id = document.getElementById.bind(document);
 
-// poly begin IE11
-if (!Element.prototype.matches)
+Element.prototype.addClass = function (className)
 {
-	Element.prototype.matches = Element.prototype.msMatchesSelector ||
-		Element.prototype.webkitMatchesSelector;
-}
+    this.classList.add(className);
+    return this;
+};
 
-if (!Element.prototype.closest)
+Element.prototype.removeClass = function (className)
 {
-	Element.prototype.closest = function (s)
-	{
-		var el = this;
+    this.classList.remove(className);
+    return this;
+};
 
-		do
-		{
-			if (Element.prototype.matches.call(el, s)) return el;
-			el = el.parentElement || el.parentNode;
-		} while (el !== null && el.nodeType === 1);
-		return null;
-	};
-}
-
-if (window.NodeList && !NodeList.prototype.forEach)
+Element.prototype.toggleClass = function (className)
 {
-	NodeList.prototype.forEach = Array.prototype.forEach;
-}
-// Poly end 
+    this.classList.toggle(className);
+    return this;
+};
 
-function $(querySelector)
+Element.prototype.hasClass = function (className)
 {
-	return document.querySelector(querySelector);
-}
-
-function $id(id)
-{
-	return document.getElementById(id);
-}
-
-function $qs(querySelector)
-{
-	return document.querySelector(querySelector);
-}
-
-function $qsall(querySelector)
-{
-	return document.querySelectorAll(querySelector);
-}
-
-Element.prototype.qs = function(querySelector)
-{
-	return this.querySelector(querySelector);
-}
-
-Element.prototype.qsall = function (querySelector)
-{
-	return this.querySelectorAll(querySelector);
-}
+    return this.classList.contains(className);
+};
 
 Element.prototype.show = function ()
 {
-	this.style.display = "inline-block";
-	return this;
-}
+    this.style.display = '';
+    return this;
+};
 
 Element.prototype.hide = function ()
 {
-	this.style.display = "none";
-	return this;
-}
-
-Element.prototype.on = function (type, listener)
-{
-	this.addEventListener(type, listener);
-	return this;
+    this.style.display = 'none';
+    return this;
 };
 
-Element.prototype.removeClass = function (name)
+Element.prototype.toggleVisibility = function ()
 {
-	this.classList.remove(name);
-	return this;
+    this.style.display = this.style.display === 'none' ? '' : 'none';
+    return this;
 };
 
-Element.prototype.addClass = function (name)
+Element.prototype.on = function (event, selectorOrHandler, handler)
 {
-	this.classList.add(name);
-	return this;
+    if (typeof selectorOrHandler === 'function')
+    {
+        this.addEventListener(event, selectorOrHandler);
+    }
+    else
+    {
+        this.addEventListener(event, function (e)
+        {
+            if (e.target.matches(selectorOrHandler))
+            {
+                handler.call(e.target, e);
+            }
+        });
+    }
+    return this;
 };
 
-Element.prototype.hasClass = function (name)
+Element.prototype.off = function (event, handler)
 {
-	return this.classList.contains(name);
+    this.removeEventListener(event, handler);
+    return this;
 };
 
-Element.prototype.toggleClass = function (name)
+NodeList.prototype.addClass = function (className)
 {
-	this.classList.toggle(name);
-	return this;
+    this.forEach(el => el.addClass(className));
+    return this;
 };
 
-NodeList.prototype.addClass = function (name)
+NodeList.prototype.removeClass = function (className)
 {
-	this.forEach(function (el)
-	{
-		el.classList.add(name);
-	});
-	return this;
+    this.forEach(el => el.removeClass(className));
+    return this;
 };
 
-NodeList.prototype.removeClass = function (name)
+NodeList.prototype.toggleClass = function (className)
 {
-	this.forEach(function (el)
-	{
-		el.classList.remove(name);
-	});
-	return this;
+    this.forEach(el => el.toggleClass(className));
+    return this;
 };
 
-NodeList.prototype.on = function (type, listener)
+NodeList.prototype.on = function (event, selectorOrHandler, handler)
 {
-	this.forEach(function (el)
-	{
-		el.addEventListener(type, listener);
-	});
-	return this;
+    this.forEach(el => el.on(event, selectorOrHandler, handler));
+    return this;
 };
 
-NodeList.prototype.show = function ()
+NodeList.prototype.off = function (event, handler)
 {
-	this.forEach(function (el)
-	{
-		el.style.display = "inline-block";
-	});
-	return this;
-};
-
-NodeList.prototype.hide = function ()
-{
-	this.forEach(function (el)
-	{
-		el.style.display = "none";
-	});
-	return this;
+    this.forEach(el => el.off(event, handler));
+    return this;
 };
