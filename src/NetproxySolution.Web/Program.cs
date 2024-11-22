@@ -1,4 +1,5 @@
 
+using NetproxySolution.Web.ErrorHandling;
 using NetproxySolution.Web.Extensions;
 
 var builder = WebApplication.CreateBuilder(new WebApplicationOptions
@@ -8,6 +9,8 @@ var builder = WebApplication.CreateBuilder(new WebApplicationOptions
 
 var services = builder.Services;
 
+services.AddSingleton(provider => new ErrorService());
+
 services.AddMvcCore().WithMultiParameterModelBinding();
 services.RegisterServices();
 services.AddHttpContextAccessor();
@@ -16,11 +19,11 @@ services.AddSession();
 
 var app = builder.Build();
 
-app.UseExceptionHandler("/error/Internal");
-app.UseStatusCodePagesWithReExecute("/error/Internal/{0}");
+app.UseExceptionHandler("/error/internal");
+app.UseStatusCodePagesWithReExecute("/error/internal/{0}");
+app.UseDefaultFiles();
+app.UseStaticFiles();
 app.UseSession();
 app.UseRouting();
 app.MapControllers();
-app.UseDefaultFiles();
-app.UseStaticFiles();
 app.Run();

@@ -1,15 +1,14 @@
 ﻿//
 // For including script, always use defer for not blocking loading of the page
 // Example: <script src="./netproxy.js" defer></script>
-// 
-(function ()
+//
+const output = $id('output');
+const progress = $id('progress');
+
+onReady(() =>
 {
 	PageEvents();
-	Init();
-})();
-
-const result = $id('result');
-const progress = $id('progress');
+});
 
 function PageEvents()
 {
@@ -22,6 +21,12 @@ function PageEvents()
 			if (result instanceof Promise)
 				await result;
 		}
+
+		if (e.target.closest(".errortable"))
+		{
+			ShowJson(e.target.closest("tr"));
+			return;
+		}
 	});
 
 	$id("UploadExample").on("change", function (e)
@@ -30,28 +35,24 @@ function PageEvents()
 	});
 }
 
-function Init()
-{
-}
-
 function HelloWorld()
 {
-	result.innerText = '';
+	output.innerText = '';
 
 	netproxy("./api/HelloWorld", { name : "alphons" }, function ()
 	{
-		result.innerText = "Result:" + this.Message;
+		output.innerText = "Result:" + this.Message;
 	});
 }
 
 
 async function SomePostAsync()
 {
-	result.innerText = '';
+	output.innerText = '';
 
 	r = await netproxyasync("./api/SomePost", { Model: { User: 'alphons' } });
 
-	result.innerText = "Result:" + r.Message;
+	output.innerText = "Result:" + r.Message;
 }
 
 
@@ -69,7 +70,7 @@ async function StartUpload(e)
 {
 	var file = e.target.files[0];
 
-	result.innerText = 'Uploading';
+	output.innerText = 'Uploading';
 
 	var formData = new FormData();
 
@@ -87,7 +88,7 @@ async function TestLongRunningAsync()
 	{
 		r = await netproxyasync("./api/TestLongRunning", { TimeOut: 2000 } );
 
-		result.innerText = "Result:" + r.Message;
+		output.innerText = "Result:" + r.Message;
 	}
 	catch (e)
 	{
@@ -106,7 +107,7 @@ async function NotFoundAsync()
 	{
 		r = await netproxyasync("./api/NotFound");
 
-		result.innerText = "Result:" + r.Message;
+		output.innerText = "Result:" + r.Message;
 	}
 	catch (e)
 	{
@@ -125,7 +126,7 @@ async function ReturnServerErrorAsync()
 	{
 		r = await netproxyasync("./api/ReturnServerError");
 
-		result.innerText = "Result:" + r.message;
+		output.innerText = "Result:" + r.message;
 	}
 	catch (e)
 	{
@@ -144,7 +145,7 @@ async function MakeServerErrorAsync()
 	{
 		r = await netproxyasync("./api/MakeServerError");
 
-		result.innerText = "Result:" + r.message;
+		output.innerText = "Result:" + r.message;
 	}
 	catch (e)
 	{
@@ -163,11 +164,11 @@ async function NoContentAsync()
 	var nocontent = await netproxyasync("./api/NoContent");
 	if (nocontent == null)
 	{
-		result.innerText = 'no content has returned null thats good';
+		output.innerText = 'no content has returned null thats good';
 	}
 	else
 	{
-		result.innerText = 'Error: no content should return null';
+		output.innerText = 'Error: no content should return null';
 	}
 }
 
@@ -182,26 +183,32 @@ async function ListErrors()
 	var page = 0;
 	var pagelength = 10;
 
-	var response = await netproxyasync("/api/ListErrors", { Search: search, Page: page, PageLength: pagelength });
+	var result = await netproxyasync("/api/ListErrors", { Search: search, Page: page, PageLength: pagelength });
 
-	result.Template(templateerrors, response, false);
+	output.Template(templateerrors, result, false);
 }
 
 function EscapeJson(s)
 {
-	return s
-		.replaceAll('\\u0022', '"')
-		.replaceAll('\\u0026', '&')
-		.replaceAll('\\u0027', '"')
-		.replaceAll('\\u003C', '<')
-		.replaceAll('\\u003E', '>')
-		.replaceAll('\\u0060', '`')
-		.replaceAll('\\r\\n', '\n')
-		.replaceAll('\\n', '\n')
-		.replaceAll('\\\\', '\\');
+	return s.replace(/\\u0022|\\u0026|\\u0027|\\u003C|\\u003E|\\u0060|\\r\\n|\\n|\\\\/g, match =>
+	{
+		switch (match)
+		{
+			case '\\u0022': return '"';
+			case '\\u0026': return '&';
+			case '\\u0027': return "'";
+			case '\\u003C': return '<';
+			case '\\u003E': return '>';
+			case '\\u0060': return '`';
+			case '\\r\\n': return '\n';
+			case '\\n': return '\n';
+			case '\\\\': return '\\';
+			default: return match; // Onbekende escape laten staan
+		}
+	});
 }
 
 function ShowJson(tr)
 {
-	preoutput.innerHTML = "<h3>" + tr.qsall("td")[2].innerHTML + "</h3>" + EscapeJson(tr.qsall("td")[3].innerHTML);
+	preoutput.innerHTML = "<h3>" + tr.$$("td")[2].innerHTML + "</h3>" + EscapeJson(tr.$$("td")[3].innerHTML);
 }

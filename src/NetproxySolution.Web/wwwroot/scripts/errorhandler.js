@@ -1,4 +1,4 @@
-﻿// version 2.1.0 (last revision Mar, 2024)
+﻿// version 2.0.2 (last revision Mar, 2024)
 
 window.addEventListener("unhandledrejection", async function (event) 
 {
@@ -7,11 +7,11 @@ window.addEventListener("unhandledrejection", async function (event)
 	{
 		await window.netproxyasync("./api/errorlog",
 		{
-			"event": event.constructor.name,
+			"event": "-",
 			"errormessage": event.reason.message,
 			"errorstack": event.reason.stack,
-			"referer": event.type,
-			"source": location.href
+			"path": event.reason.name,
+			"source": event.type
 		});
 	}
 	catch (err)
@@ -21,23 +21,24 @@ window.addEventListener("unhandledrejection", async function (event)
 });
 
 
-window.onerror = async function (event, source, lineno, colno, error)
+window.onerror = async function (message, source, lineno, colno, error)
 {
 	try
 	{
 		if (source.indexOf("api/errorlog") < 0)
 			await window.netproxyasync("./api/errorlog",
 			{
-				"event": event,
+				"event": message,
 				"errormessage" : error.message,
 				"errorstack": error.stack,
-				"referer": "line:" + lineno + " col:" + colno,
-				"source": source
+				"path": source,
+				"source": "line:" + lineno + " col:" + colno
 			});
 	}
 	catch (err)
 	{
 		console.error(err);
 	}
+	return true;
 }
 

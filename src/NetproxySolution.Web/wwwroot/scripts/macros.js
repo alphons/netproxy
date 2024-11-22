@@ -4,6 +4,21 @@ const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);
 const $id = document.getElementById.bind(document);
 
+//onReady(() =>
+//{
+//});
+const onReady = (callback) => document.addEventListener("DOMContentLoaded", callback);
+
+Element.prototype.$ = function (selector)
+{
+    return this.querySelector(selector);
+};
+
+Element.prototype.$$ = function (selector)
+{
+    return this.querySelectorAll(selector);
+};
+
 Element.prototype.addClass = function (className)
 {
     this.classList.add(className);
