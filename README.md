@@ -88,17 +88,7 @@ In essence, **"Pure-DOM Netproxy and Template API"** isn’t just a script. It�
 
 ---
 
-### Credits
-
-- **Author**: Alphons van der Heijden  
-- **Version**: 3.0.0 (Last updated: November 2024)  
-- **License**: © 2019-2024 Alphons van der Heijden  
-
----
-
-Alphons created **the Swiss Army Knife of front-end development**. This script isn’t just functional—it’s downright legendary. 🎉
-
-
+## Usage
 
 The netproxy package consists of some small javascript macros and javascript methods to make json calls to .net core controllers.
 There are no dependencies and is fully modern DOM compatible.
@@ -125,7 +115,7 @@ netproxy("./api/post",
 Asynchronous calls:
 
 ```javascript
-result = await netproxyasync("./api/helloworld", null);
+result = await netproxyasync("./api/helloworld");
 alert(result.Message);
 
 result = await netproxyasync("./api/post", 
@@ -277,5 +267,69 @@ public async Task<IActionResult> DemoMethod2(
 }
 ```
 
+## Using template functionality
+
+```c#
+const output = $id('output');
+
+var result = await netproxyasync("/api/ListErrors", 
+  { 
+    Search: "", 
+	Page: 0, 
+	PageLength: 10 
+  });
+
+output.Template(templateerrors, result, false);
+```
+
+```html
+<script type="text/template" id="templateerrors">
+		<table class="errortable">
+			<thead>
+				<tr>
+					<th>Time</th>
+					<th>Code</th>
+					<th>ErrorMessage</th>
+					<th>ErrorStack</th>
+					<th>Event</th>
+					<th>Path</th>
+					<th>Source</th>
+					<th>IpAddress</th>
+					<th>Referer</th>
+					<th>UserAgent</th>
+					<th>SessionId</th>
+				</tr>
+			</thead>
+			<tbody>
+				{{ for(i=0;i<this.List.length;i++) { }}
+				{{ var item = this.List[i]; }}
+				<tr data-id="{{=item.Id}}">
+					<td>{{=item.Time}}</td>
+					<td>{{=item.ErrorCode}}</td>
+					<td>{{=item.ErrorMessage}}</td>
+					<td>{{=item.ErrorStack}}</td>
+					<td>{{=item.Event}}</td>
+					<td>{{=item.Path}}</td>
+					<td>{{=item.Source}}</td>
+					<td>{{=item.IpAddress}}</td>
+					<td>{{=item.Referer}}</td>
+					<td>{{=item.UserAgent}}</td>
+					<td>{{=item.SessionId}}</td>
+				</tr>
+				{{ } }}
+			</tbody>
+		</table>
+	</script>
+```
+
 For more tests see the [Mvc.ModelBinding.MultiParameter](https://github.com/alphons/Mvc.ModelBinding.MultiParameter) project on github.
 
+### Credits
+
+- **Author**: Alphons van der Heijden  
+- **Version**: 3.0.0 (Last updated: November 2024)  
+- **License**: © 2019-2024 Alphons van der Heijden  
+
+---
+
+Alphons created **the Swiss Army Knife of front-end development**. This script isn’t just functional—it’s downright legendary. 🎉
