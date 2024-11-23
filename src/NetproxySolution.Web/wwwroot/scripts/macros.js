@@ -60,6 +60,31 @@ Element.prototype.toggleVisibility = function ()
     return this;
 };
 
+Document.prototype.on = function (event, selectorOrHandler, handler) 
+{
+    if (typeof selectorOrHandler === 'function') 
+    {
+        this.addEventListener(event, selectorOrHandler);
+    }
+    else if (typeof selectorOrHandler === 'string' && typeof handler === 'function') 
+    {
+        this.addEventListener(event, function (e) 
+        {
+            if (e.target.matches(selectorOrHandler)) 
+            {
+                handler.call(e.target, e);
+            }
+        });
+    }
+    else 
+    {
+        throw new Error('Invalid arguments: Expected (event, selector, handler) or (event, handler).');
+    }
+
+    return this;
+};
+
+
 Element.prototype.on = function (event, selectorOrHandler, handler)
 {
     if (typeof selectorOrHandler === 'function')

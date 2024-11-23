@@ -2,7 +2,7 @@
 <package >
 	<metadata>
 		<id>netproxy</id>
-		<version>2.1.0</version>
+		<version>3.0.0</version>
 		<title>netproxy</title>
 		<readme>docs\README.md</readme>
 		<authors>alphons</authors>
