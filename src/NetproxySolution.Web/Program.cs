@@ -11,6 +11,9 @@ var services = builder.Services;
 
 services.AddSingleton(provider => new ErrorService());
 
+services.AddControllersWithViews();
+services.AddRazorPages(o => o.RootDirectory = "/wwwroot");
+
 services.AddMvcCore().WithMultiParameterModelBinding();
 services.RegisterServices();
 services.AddHttpContextAccessor();
@@ -24,6 +27,8 @@ app.UseStatusCodePagesWithReExecute("/error/internal/{0}");
 app.UseDefaultFiles();
 app.UseStaticFiles();
 app.UseSession();
-app.UseRouting();
+
 app.MapControllers();
+app.MapDefaultControllerRoute();
+app.MapRazorPages();
 app.Run();

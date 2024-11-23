@@ -4,6 +4,7 @@ using NetproxySolution.Web.DataModel;
 using NetproxySolution.Web.Extensions;
 using System.Diagnostics;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 
 namespace NetproxySolution.Web.ErrorHandling;
 
@@ -18,8 +19,8 @@ public interface IErrorController
 }
 
 // ScopedRegistration, even it inherits Controller or ControllerBase (http error 405)
-[ScopedRegistration]
-public class ErrorController(ErrorService errorservice) : Controller, IErrorController
+//[ScopedRegistration]
+public partial class ErrorController(ErrorService errorservice) : Controller, IErrorController
 {
 	public int LogError(int errorCode,
 		string path,
@@ -36,10 +37,10 @@ public class ErrorController(ErrorService errorservice) : Controller, IErrorCont
 		{
 			Id = id,
 			Time = DateTime.Now,
-			IpAddress = HttpContext?.Connection.RemoteIpAddress?.ToString() ?? "0.0.0.0",
-			SessionId = HttpContext?.Session.Id ?? string.Empty,
-			Referer = HttpContext?.Request.Headers.Referer.ToString() ?? "-",
-			UserAgent = HttpContext?.Request.Headers.UserAgent.ToString() ?? "-",
+			IpAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? "0.0.0.0",
+			SessionId = HttpContext?.Session?.Id ?? string.Empty,
+			Referer = HttpContext?.Request?.Headers.Referer.ToString() ?? "-",
+			UserAgent = HttpContext?.Request?.Headers.UserAgent.ToString() ?? "-",
 			ErrorCode = errorCode,
 			Path = path,
 			Event = @event,
@@ -48,6 +49,26 @@ public class ErrorController(ErrorService errorservice) : Controller, IErrorCont
 			Source = source
 		});
 		return id;
+	}
+
+	public static string EscapeJson(string s)
+	{
+		return MyRegex().Replace(s, match =>
+		{
+			return match.Value switch
+			{
+				"\\u0022" => "\"",
+				"\\u0026" => "&",
+				"\\u0027" => "'",
+				"\\u003C" => "<",
+				"\\u003E" => ">",
+				"\\u0060" => "`",
+				"\\r\\n" => "\n",
+				"\\n" => "\n",
+				"\\\\" => "\\",
+				_ => match.Value // Laat onbekende escapes intact
+			};
+		});
 	}
 
 	[HttpGet("~/error/internal")]
@@ -78,13 +99,11 @@ public class ErrorController(ErrorService errorservice) : Controller, IErrorCont
 			{
 				//errorCode = featureStatusCode.OriginalStatusCode;
 				path = featureStatusCode.OriginalPath;
-				errormessage = HttpContext.Response.ToString() ?? "-";
+				errormessage = HttpContext.Response?.ToString() ?? "-";
 			}
 		}
 
 		_ = LogError(errorCode, path, @event, errormessage, errorstack, source);
-
-		//var html = message.Replace(@"\\", @"\").Replace(@"\r\n", "<br/>");
 
 		if (HttpContext.Request.ContentType != null && HttpContext.Request.ContentType.Contains("json"))
 			return StatusCode(errorCode, $"this error code '{errorCode}' is submitted to the programmers");
@@ -92,18 +111,7 @@ public class ErrorController(ErrorService errorservice) : Controller, IErrorCont
 		var niceerror = string.Empty;
 
 		if (Debugger.IsAttached)
-		{
-			niceerror = errorstack
-				.Replace("\\r\\n", "\r\n")
-				.Replace("\\\\", "\\")
-				.Replace("\\u0022", "\"")
-				.Replace("\\u0026", "&amp;")
-				.Replace("\\u0027", "'")
-				.Replace("\\u003C", "&lt;")
-				.Replace("\\u003E", "&gt;")
-				.Replace("\\u0060", "&grave;");
-			niceerror = $"<h3>{errormessage}</h3><pre>{niceerror}</pre";
-		}
+			niceerror = $"<h3>{errormessage}</h3><pre>{errorstack}</pre";
 
 		ViewData["ErrorCode"] = errorCode;
 
@@ -142,4 +150,6 @@ public class ErrorController(ErrorService errorservice) : Controller, IErrorCont
 		});
 	}
 
+	[GeneratedRegex(@"\\u0022|\\u0026|\\u0027|\\u003C|\\u003E|\\u0060|\\r\\n|\\n|\\\\")]
+	private static partial Regex MyRegex();
 }

@@ -1,8 +1,104 @@
-# netproxy 2.0
+﻿# Pure-DOM Netproxy 3.0 and Template API
 
 Nuget package https://www.nuget.org/packages/netproxy/
 
-This package depends on the nuget package https://www.nuget.org/packages/Mvc.ModelBinding.MultiParameter/
+This package works seamlessly with the NuGet package https://www.nuget.org/packages/Mvc.ModelBinding.MultiParameter/
+
+
+## The Ultimate Bridge Between Client and Server
+
+At the heart of this script lies **netproxy**, the ultimate **bridge** between client-side scripting and server-side API controllers. It elegantly handles **complex parameter inputs**, whether you’re sending JSON payloads, uploading files, or making precise HTTP calls. With **netproxy**, the days of juggling verbose AJAX code are over—this script transforms **API communication into a seamless, flexible, and highly intuitive experience**.
+
+---
+
+## Features
+
+### 1. A Networking Powerhouse
+- The **netproxy** function is the backbone of your API interactions:
+  - Supports **multiple parameter types**, from JSON objects to `FormData`.
+  - Includes advanced **file upload capabilities**, catering to modern web apps.
+  - Handles **cross-origin requests (CORS)**, bridging client and server worlds.
+  - Automatically displays a **spinner for long-running requests**, keeping users informed.
+
+---
+
+### 2. Asynchronous Brilliance
+- Modern web development demands modern solutions, and `netproxyasync` delivers:
+  - Fully supports **Promises**, allowing for intuitive `async/await` workflows.
+  - Cleanly integrates with existing applications, eliminating callback clutter.
+
+---
+
+### 3. Intelligent API Response Handling
+- Effortlessly manage complex API responses with:
+  - **No-Content (204)** handling for operations that succeed without payloads.
+  - Automatic **JSON parsing**, with fallback error handling for malformed responses.
+
+---
+
+### 4. File Downloads Made Effortless
+- The script’s **file download support** is second to none:
+  - Automatically detects `Content-Disposition` headers to retrieve filenames.
+  - Dynamically creates secure download links for a flawless user experience.
+
+---
+
+### 5. Dynamic HTML Rendering, Redefined
+- Templates are no longer static or cumbersome. With **TemplateHtml**, you get:
+  - **Dynamic HTML rendering** from reusable templates.
+  - Secure output via **HTML escaping**, ensuring safe integration of user data.
+  - Optimized **performance through caching**, making repeated rendering lightning fast.
+
+---
+
+### 6. Total Control Over Progress
+- Never leave users in the dark. With **upload and download progress tracking**, the script allows for:
+  - Visual indicators of data transfer.
+  - Real-time updates, keeping users informed and engaged.
+
+---
+
+### 7. Uncompromising Security
+- XSS attacks are a thing of the past. With the **escapeHtml** utility:
+  - User input and external data are safely sanitized.
+  - Your app remains secure, no matter the source of the data.
+
+---
+
+### 8. Built for Any Data Format
+- Whether it’s a **JSON payload** or a **multipart FormData request**, this script handles it with grace. It adapts effortlessly to the demands of modern applications.
+
+---
+
+### 9. Optimized for Developers
+- From its **declarative style** to its robust error handling, the script saves time and headaches:
+  - Clear separation of concerns between client-side logic and server-side APIs.
+  - Minimized boilerplate code, letting developers focus on functionality.
+
+---
+
+### 10. Future-Proof Design
+- Built with the **latest JavaScript standards**, this script is ready for whatever the future holds. It’s not just a tool—it’s a **developer’s ally**.
+
+---
+
+## Why Use This Script?
+
+In essence, **"Pure-DOM Netproxy and Template API"** isn’t just a script. It’s a **revolutionary enabler**, a tool that doesn’t just solve problems but **sets new standards**. With its unparalleled versatility and power, it transforms the way developers interact with APIs and the DOM.
+
+---
+
+### Credits
+
+- **Author**: Alphons van der Heijden  
+- **Version**: 3.0.0 (Last updated: November 2024)  
+- **License**: © 2019-2024 Alphons van der Heijden  
+
+---
+
+Alphons created **the Swiss Army Knife of front-end development**. This script isn’t just functional—it’s downright legendary. 🎉
+
+
 
 The netproxy package consists of some small javascript macros and javascript methods to make json calls to .net core controllers.
 There are no dependencies and is fully modern DOM compatible.
