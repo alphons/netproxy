@@ -13,7 +13,7 @@ onReady(() =>
 function PageEvents()
 {
 	// global click event handler, if "id" function exist then execute sync or async
-	document.addEventListener("click", async function (e)
+	document.on("click", async function (e)
 	{
 		if (e.target.id && typeof window[e.target.id] === "function")
 		{
@@ -77,7 +77,7 @@ async function StartUpload(e)
  	formData.append("file", file, file.name);
 	formData.append("Form1", "Value1"); // some extra Form data
 
-	var res = await netproxyasync("/api/upload", formData, ProgressHandler);
+	var res = await netproxyasync("./api/upload", formData, ProgressHandler);
 
 	progress.innerText = "Bytes:" + res.Length+" Some var:" + res.Form1;
 }
@@ -183,7 +183,7 @@ async function ListErrors()
 	var page = 0;
 	var pagelength = 10;
 
-	var result = await netproxyasync("/api/ListErrors", { Search: search, Page: page, PageLength: pagelength });
+	var result = await netproxyasync("./api/ListErrors", { Search: search, Page: page, PageLength: pagelength });
 
 	output.Template(templateerrors, result, false);
 }
