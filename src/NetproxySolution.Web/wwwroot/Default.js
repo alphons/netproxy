@@ -158,17 +158,51 @@ async function MakeServerErrorAsync()
 
 }
 
-
-async function NoContentAsync()
+async function NotFound2Async()
 {
-	var nocontent = await netproxyasync("./api/NoContent");
-	if (nocontent == null)
+	r = await netproxyasync("./api/NotFound");
+
+	output.innerText = "Result:" + r.Message;
+}
+
+async function ReturnServerError2Async()
+{
+	r = await netproxyasync("./api/ReturnServerError");
+
+	output.innerText = "Result:" + r.message;
+}
+
+async function MakeServerError2Async()
+{
+	r = await netproxyasync("./api/MakeServerError");
+
+	output.innerText = "Result:" + r.message;
+}
+
+
+async function NullContentAsync()
+{
+	var nullcontent = await netproxyasync("./api/NullContent");
+	if (nullcontent === null)
 	{
-		output.innerText = 'no content has returned null thats good';
+		output.innerText = 'null content has returned null thats good';
 	}
 	else
 	{
-		output.innerText = 'Error: no content should return null';
+		output.innerText = 'Error: null content should return null';
+	}
+}
+
+async function EmptyContentAsync()
+{
+	var emptycontent = await netproxyasync("./api/EmptyContent");
+	if (emptycontent === "")
+	{
+		output.innerText = 'empty content has returned "" thats good';
+	}
+	else
+	{
+		output.innerText = 'Error: empty content should return ""';
 	}
 }
 

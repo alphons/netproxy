@@ -3,7 +3,7 @@
  *	@name		pure-dom netproxy and template api
  * 
  *	@author     Alphons van der Heijden <alphons@heijden.com>
- *	@version    3.0.0 (last revision Nov, 2024)
+ *	@version    3.0.1 (last revision Nov, 2024)
  *	@copyright  (c) 2019-2024 Alphons van der Heijden
  *	@alias      netproxy, netproxyasync, Element.Template, TemplateHtml
  * 
@@ -36,18 +36,18 @@
 	// netproxy functionaliteit
 	window.netproxy = function (url, data, onsuccess, onerror, onprogress)
 	{
-		var spinner = document.getElementById("netproxyspinner");
+		const spinner = document.getElementById("netproxyspinner");
 		if (typeof remote !== 'undefined')
 			url = remote + url;
-		if (spinner)
-			var timeoutSpinner = setTimeout(() => spinner.style.display = 'block', 1000);
-		var xhr = new XMLHttpRequest();
+		var timeoutSpinner = setTimeout(() => spinner.style.display = 'block', 1000);
+		const xhr = new XMLHttpRequest();
 		xhr.open(data ? 'POST' : 'GET', url, true);
 		xhr.withCredentials = url.indexOf(window.location.host) < 0 && url[0] !== '/';
 		if (!(data instanceof FormData))
-			xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
-		if (data instanceof FormData)
+		{
 			xhr.timeout = 30000;
+			xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+		}
 		xhr.onloadend = function ()
 		{
 			if (timeoutSpinner)
@@ -77,16 +77,24 @@
 					setTimeout(() => URL.revokeObjectURL(a.href), 40000);
 					return;
 				}
+
+				let response = xhr.response;
 				try
 				{
-					const parsedResponse = JSON.parse(xhr.responseText);
-					if (typeof onsuccess === 'function')
-						onsuccess.call(parsedResponse, parsedResponse);
-					return;
+					response = JSON.parse(xhr.responseText);
 				}
 				catch (e)
 				{
-					const error = new Error("Response kon niet worden geparsed.");
+				}
+
+				try
+				{
+					if (typeof onsuccess === 'function')
+						onsuccess.call(response, response);
+					return;
+				}
+				catch (error)
+				{
 					if (typeof onerror === 'function')
 					{
 						onerror.call(xhr, error);
@@ -97,7 +105,8 @@
 			}
 			if (xhr.status >= 400)
 			{
-				const error = new Error(`HTTP error! Status: ${xhr.status}`);
+				const error = new Error(`Http:${xhr.status}`);
+				error.path = url;
 				if (typeof onerror === 'function')
 				{
 					onerror.call(xhr, error);
@@ -108,8 +117,9 @@
 			if (xhr.status === 0)
 			{
 				const error = xhr.timedout
-					? new Error(`Timeout van ${xhr.timeout}ms overschreden`)
-					: new Error("Netwerkfout of verzoek geannuleerd");
+					? new Error(`Timeout ${xhr.timeout}ms for ${url}`)
+					: new Error(`Network error or request canceled for ${url}`);
+				error.path = url;
 				if (typeof onerror === 'function')
 				{
 					onerror.call(xhr, error);

@@ -18,13 +18,22 @@ public class DefaultController : ControllerBase
 		});
 	}
 
-	[HttpGet("~/api/NoContent")]
-	public async Task<IActionResult> NoContentAsync()
+	[HttpGet("~/api/NullContent")]
+	public async Task<IActionResult> NullContentAsync()
 	{
 		await Task.Yield();
 
 		return Ok(null);
 	}
+
+	[HttpGet("~/api/EmptyContent")]
+	public async Task<IActionResult> EmptyContent()
+	{
+		await Task.Yield();
+
+		return Ok();
+	}
+
 
 	public class ModelClass
 	{

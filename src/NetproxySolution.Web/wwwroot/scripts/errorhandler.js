@@ -10,7 +10,7 @@ window.addEventListener("unhandledrejection", async function (event)
 			"event": "-",
 			"errormessage": event.reason.message,
 			"errorstack": event.reason.stack,
-			"path": event.reason.name,
+			"path": event.reason.path,
 			"source": event.type
 		});
 	}

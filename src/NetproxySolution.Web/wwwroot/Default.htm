@@ -24,13 +24,27 @@
 
 	<div><span id="TestLongRunningAsync" class="ui-btn">TestLongRunningAsync (get)</span></div>
 
-	<div><span id="ReturnServerErrorAsync" class="ui-btn">ReturnServerErrorAsync (get)</span></div>
+	<fieldset>
+		<legend>CLient Handled (try catched)</legend>
+		<div><span id="ReturnServerErrorAsync" class="ui-btn">ReturnServerErrorAsync (get)</span></div>
 
-	<div><span id="MakeServerErrorAsync" class="ui-btn">MakeServerErrorAsync (get)</span></div>
+		<div><span id="MakeServerErrorAsync" class="ui-btn">MakeServerErrorAsync (get)</span></div>
 
-	<div><span id="NotFoundAsync" class="ui-btn">NotFoundAsync (get)</span></div>
+		<div><span id="NotFoundAsync" class="ui-btn">NotFoundAsync (get)</span></div>
+	</fieldset>
 
-	<div><span id="NoContentAsync" class="ui-btn">NoContent (get)</span></div>
+	<fieldset>
+		<legend>Client UnHandled</legend>
+		<div><span id="ReturnServerError2Async" class="ui-btn">ReturnServerError2Async (get)</span></div>
+
+		<div><span id="MakeServerError2Async" class="ui-btn">MakeServerError2Async (get)</span></div>
+
+		<div><span id="NotFound2Async" class="ui-btn">NotFound2Async (get)</span></div>
+	</fieldset>
+
+
+	<div><span id="NullContentAsync" class="ui-btn">NullContent (get)</span></div>
+	<div><span id="EmptyContentAsync" class="ui-btn">EmptyContent (get)</span></div>
 
 	<div id="UploadExample">
 		<label class="UploadImage ui-btn" for="UploadImage">Upload a File</label>
