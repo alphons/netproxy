@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Mvc.ModelBinding.MultiParameter" Version="1.2.0" />
+    <PackageReference Include="Mvc.ModelBinding.MultiParameter" Version="8.2.1" />
   </ItemGroup>
 
   <ItemGroup>
