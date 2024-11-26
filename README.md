@@ -333,3 +333,33 @@ For more tests see the [Mvc.ModelBinding.MultiParameter](https://github.com/alph
 ---
 
 Alphons created **the Swiss Army Knife of front-end development**. This script isn’t just functional—it’s downright legendary. 🎉
+
+### netproxy and fetch comparison
+
+1. **Legacy browser support**  
+   **fetch** lacks support in older browsers without polyfills, while **netproxy** works consistently across environments.
+
+2. **Built-in timeout handling**  
+   **fetch** requires extra logic (e.g., `AbortController`) for timeouts, whereas **netproxy** handles them natively.
+
+3. **Progress tracking**  
+   **fetch** lacks native progress events, but **netproxy** supports upload and download tracking out of the box.
+
+4. **Simplified request interception**  
+   **fetch** requires additional middleware for request manipulation; **netproxy** provides this functionality directly.
+
+5. **Fine-grained control**  
+   **netproxy** offers better control over headers, synchronous execution, and retry mechanisms compared to **fetch**.
+
+6. **Lightweight and dependency-free**  
+   **fetch** often requires polyfills, whereas **netproxy** is lightweight and works without external dependencies.
+
+7. **Reliable in edge cases**  
+   **netproxy** handles scenarios like cross-origin credentials and custom headers more predictably than **fetch**.
+
+8. **Simplified error handling**  
+   **fetch** doesn't treat HTTP status errors as exceptions; **netproxy** handles them consistently and intuitively.
+
+---
+
+**netproxy** was chosen for its flexibility, reliability, and suitability for the project’s needs.
