@@ -1,9 +1,8 @@
 ﻿// version 1.3 2020-08-30 (C) AAB van der Heijden
-// Updated 2.0 2024-11-22
-// Updated 2.1 2024-11-23
-const $ = document.querySelector.bind(document);
-const $$ = document.querySelectorAll.bind(document);
-const $id = document.getElementById.bind(document);
+// Updated 2.2 2024-11-30
+window.$ = document.querySelector.bind(document);
+window.$$ = document.querySelectorAll.bind(document);
+window.$id = document.getElementById.bind(document);
 
 //onReady(() =>
 //{

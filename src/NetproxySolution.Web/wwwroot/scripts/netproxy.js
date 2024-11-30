@@ -39,7 +39,8 @@
 		const spinner = document.getElementById("netproxyspinner");
 		if (typeof remote !== 'undefined')
 			url = remote + url;
-		var timeoutSpinner = setTimeout(() => spinner.style.display = 'block', 1000);
+		if(spinner)
+			var timeoutSpinner = setTimeout(() => spinner.style.display = 'block', 1000);
 		const xhr = new XMLHttpRequest();
 		xhr.open(data ? 'POST' : 'GET', url, true);
 		xhr.withCredentials = url.indexOf(window.location.host) < 0 && url[0] !== '/';
