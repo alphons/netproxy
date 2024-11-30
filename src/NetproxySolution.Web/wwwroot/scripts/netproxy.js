@@ -3,7 +3,7 @@
  *	@name		pure-dom netproxy and template api
  * 
  *	@author     Alphons van der Heijden <alphons@heijden.com>
- *	@version    3.0.1 (last revision Nov, 2024)
+ *	@version    3.0.2 (last revision Nov, 2024)
  *	@copyright  (c) 2019-2024 Alphons van der Heijden
  *	@alias      netproxy, netproxyasync, Element.Template, TemplateHtml
  * 
