@@ -24,6 +24,15 @@ var app = builder.Build();
 
 app.UseExceptionHandler("/error/internal");
 app.UseStatusCodePagesWithReExecute("/error/internal/{0}");
+
+//Uploads go via c:\windows\temp
+app.Use(next => context =>
+{
+	context.Request.EnableBuffering(Int32.MaxValue);
+	return next(context);
+});
+
+
 app.UseDefaultFiles();
 app.UseStaticFiles();
 app.UseSession();
