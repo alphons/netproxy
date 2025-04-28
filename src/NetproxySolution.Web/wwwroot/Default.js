@@ -246,3 +246,10 @@ function ShowJson(tr)
 {
 	preoutput.innerHTML = "<h3>" + tr.$$("td")[2].innerHTML + "</h3>" + EscapeJson(tr.$$("td")[3].innerHTML);
 }
+
+
+async function Coordinates()
+{
+	var result = await netproxyasync("./app/gps/location", { latitude: 1.23, longitude : 4.56, timestamp : 'jan 2025' });
+
+}

@@ -1,13 +1,16 @@
 ﻿// version 1.3 2020-08-30 (C) AAB van der Heijden
-// Updated 2.3 2024-12-05
+// Updated 2.4 2025-01-03
 window.$ = document.querySelector.bind(document);
 window.$$ = document.querySelectorAll.bind(document);
 window.$id = document.getElementById.bind(document);
 
+//DOM reader
 //onReady(() =>
 //{
 //});
 const onReady = (callback) => document.addEventListener("DOMContentLoaded", callback);
+//DOM and stylesheets ready
+const onLoad = (callback) => window.addEventListener("load", callback);
 
 Element.prototype.$ = function (selector)
 {
@@ -44,7 +47,7 @@ Element.prototype.hasClass = function (className)
 
 Element.prototype.show = function ()
 {
-    this.style.display = '';
+    this.style.display = 'inline-block';
     return this;
 };
 

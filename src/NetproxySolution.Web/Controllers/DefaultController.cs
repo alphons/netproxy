@@ -127,6 +127,13 @@ public class DefaultController : ControllerBase
 		return Ok();
 	}
 
+
+	[HttpPost("~/app/gps/location")]
+	public IActionResult GpsLocation(double latitude, double longitude, string timestamp)
+	{
+		return Ok();
+	}
+
 }
 
 
