@@ -4,7 +4,7 @@ using NetproxySolution.Web.Extensions;
 
 var builder = WebApplication.CreateBuilder(new WebApplicationOptions
 {
-	ContentRootPath = AppDomain.CurrentDomain.BaseDirectory
+	ContentRootPath = AppContext.BaseDirectory
 });
 
 var services = builder.Services;

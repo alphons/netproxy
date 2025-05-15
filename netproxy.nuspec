@@ -2,7 +2,7 @@
 <package >
 	<metadata>
 		<id>netproxy</id>
-		<version>8.0.1</version>
+		<version>8.2.3</version>
 		<title>netproxy</title>
 		<readme>docs\README.md</readme>
 		<authors>alphons</authors>
@@ -16,7 +16,7 @@
 			.net core controllers (including uploads and progress events)
 		</description>
 		<dependencies>
-			<dependency id="Mvc.ModelBinding.MultiParameter" version="8.2.1" />
+			<dependency id="Mvc.ModelBinding.MultiParameter" version="8.2.3" />
 		</dependencies>
 		<!-- <releaseNotes>First release.</releaseNotes> -->
 		<!-- <copyright>$copyright$</copyright> -->
