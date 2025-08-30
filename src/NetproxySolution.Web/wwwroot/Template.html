@@ -1,0 +1,169 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>TemplateHtml Demo</title>
+	<style>
+		table
+		{
+			border-collapse: collapse;
+			margin: 10px 0;
+		}
+
+		th, td
+		{
+			border: 1px solid #ccc;
+			padding: 8px;
+			text-align: left;
+		}
+
+		.nested-table
+		{
+			margin: 0;
+		}
+
+			.nested-table td
+			{
+				border: 1px solid #ddd;
+				padding: 4px;
+			}
+	</style>
+</head>
+<body>
+	<!-- Template 1: Simple output -->
+	<script id="template1" type="text/template">
+		Hello, <%=user.name%>!
+	</script>
+	<!-- Template 2: Nested properties -->
+	<script id="template2" type="text/template">
+		<p>User: <%=user.profile.firstName%> <%=user.profile.lastName%></p>
+	</script>
+	<!-- Template 3: Control structure (loop) -->
+	<script id="template3" type="text/template">
+		<ul>
+			<% for (let i = 0; i < items.length; i++) { %>
+			<li><%=items[i]%></li>
+			<% } %>
+		</ul>
+	</script>
+	<!-- Template 4: Error handling -->
+	<script id="template4" type="text/template">
+		<div><%=user.missingProperty?.subProperty%></div>
+	</script>
+	<!-- Template 5: Combined code and output -->
+	<script id="template5" type="text/template">
+		<div>
+			<% let greeting = "Welcome"; %>
+			<%=greeting%>, <%=user.name%>!
+		</div>
+	</script>
+	<!-- Template 6: Multiple expressions -->
+	<script id="template6" type="text/template">
+		<p>Hello <%=user.firstName%> <%=user.lastName%>, your score is <%=user.score%>!</p>
+	</script>
+	<!-- Template 7: Complex table with nested tables -->
+	<script id="template7" type="text/template">
+		<table>
+			<tr>
+				<th>Team</th>
+				<th>Members</th>
+				<th>Projects</th>
+				<th>Total Score</th>
+			</tr>
+			<% for (let i = 0; i < teams.length; i++) { %>
+			<% let team = teams[i]; %>
+			<tr>
+				<td><%=team.name%></td>
+				<td>
+					<table class="nested-table">
+						<tr>
+							<th>Name</th>
+							<th>Role</th>
+						</tr>
+						<% for (let j = 0; j < team.members.length; j++) { %>
+						<tr>
+							<td><%=team.members[j].name%></td>
+							<td><%=team.members[j].role%></td>
+						</tr>
+						<% } %>
+					</table>
+				</td>
+				<td>
+					<table class="nested-table">
+						<tr>
+							<th>Project</th>
+							<th>Status</th>
+						</tr>
+						<% for (let k = 0; k < team.projects.length; k++) { %>
+						<tr>
+							<td><%=team.projects[k].name%></td>
+							<td><%=team.projects[k].status%></td>
+						</tr>
+						<% } %>
+					</table>
+				</td>
+				<td>
+					<% let totalScore = team.members.reduce((sum, member) => sum + (member.score || 0), 0); %>
+					<%=totalScore%>
+				</td>
+			</tr>
+			<% } %>
+		</table>
+	</script>
+	<!-- Output container -->
+	<div id="output" style="margin-top: 20px;"></div>
+	<script src="template.js" defer></script>
+	<script>
+		function runTests()
+		{
+			const output = document.getElementById("output");
+			// Example 1: Simple output
+			const data1 = { user: { name: "John" } };
+			output.Template("template1", data1, true);
+			// Example 2: Nested properties
+			const data2 = { user: { profile: { firstName: "Jane", lastName: "Doe" } } };
+			output.Template("template2", data2, true);
+			// Example 3: Control structure (loop)
+			const data3 = { items: ["Apple", "Banana", "Orange"] };
+			output.Template("template3", data3, true);
+			// Example 4: Error handling
+			const data4 = { user: {} };
+			output.Template("template4", data4, true);
+			// Example 5: Combined code and output
+			const data5 = { user: { name: "Alice" } };
+			output.Template("template5", data5, true);
+			// Example 6: Multiple expressions
+			const data6 = { user: { firstName: "Bob", lastName: "Smith", score: 95 } };
+			output.Template("template6", data6, true);
+			// Example 7: Complex table with nested tables
+			const data7 = {
+				teams: [
+					{
+						name: "Alpha",
+						members: [
+							{ name: "Alice", role: "Developer", score: 90 },
+							{ name: "Bob", role: "Designer", score: 85 }
+						],
+						projects: [
+							{ name: "Website Redesign", status: "In Progress" },
+							{ name: "Mobile App", status: "Completed" }
+						]
+					},
+					{
+						name: "Beta",
+						members: [
+							{ name: "Charlie", role: "Manager", score: 95 },
+							{ name: "Diana", role: "Tester", score: 80 }
+						],
+						projects: [
+							{ name: "API Integration", status: "Planned" }
+						]
+					}
+				]
+			};
+			output.Template("template7", data7, true);
+		}
+		document.addEventListener("DOMContentLoaded", runTests);
+	</script>
+</body>
+</html>

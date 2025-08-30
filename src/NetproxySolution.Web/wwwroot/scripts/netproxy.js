@@ -3,7 +3,7 @@
  *	@name		pure-dom netproxy and template api
  * 
  *	@author     Alphons van der Heijden <alphons@heijden.com>
- *	@version    3.0.2 (last revision Nov, 2024)
+ *	@version    3.0.3 (last revision 30 aug, 2025)
  *	@copyright  (c) 2019-2024 Alphons van der Heijden
  *	@alias      netproxy, netproxyasync, Element.Template, TemplateHtml
  * 
@@ -18,9 +18,13 @@
 	function escapeHtml(unsafe)
 	{
 		if (Array.isArray(unsafe))
+		{
 			return unsafe.map(item => escapeHtml(item)).join(', ');
+		}
 		if (unsafe === null || unsafe === undefined)
+		{
 			return '';
+		}
 		return String(unsafe).replace(/[&<>"']/g, function (match)
 		{
 			return {
@@ -33,34 +37,52 @@
 		});
 	}
 
-	// netproxy functionaliteit
-	window.netproxy = function (url, data, onsuccess, onerror, onprogress)
+	// Helper functie voor spinner logica
+	function manageSpinner(spinner, show, timeoutSpinner)
+	{
+		if (spinner)
+		{
+			spinner.style.display = show ? 'block' : 'none';
+		}
+		if (timeoutSpinner && !show)
+		{
+			clearTimeout(timeoutSpinner);
+		}
+	}
+
+	// Netproxy functionaliteit
+	window.netproxy = function (url, data, onsuccess, onerror, onprogress, timeout = 30000)
 	{
 		const spinner = document.getElementById("netproxyspinner");
 		if (typeof remote !== 'undefined')
+		{
 			url = remote + url;
-		if(spinner)
-			var timeoutSpinner = setTimeout(() => spinner.style.display = 'block', 1000);
+		}
+
+		const timeoutSpinner = spinner ? setTimeout(() => manageSpinner(spinner, true), 1000) : null;
 		const xhr = new XMLHttpRequest();
 		xhr.open(data ? 'POST' : 'GET', url, true);
 		xhr.withCredentials = url.indexOf(window.location.host) < 0 && url[0] !== '/';
+
 		if (!(data instanceof FormData))
 		{
-			xhr.timeout = 30000;
+			xhr.timeout = timeout;
 			xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
 		}
+
 		xhr.onloadend = function ()
 		{
-			if (timeoutSpinner)
-				clearTimeout(timeoutSpinner);
-			if (spinner)
-				spinner.style.display = 'none';
+			manageSpinner(spinner, false, timeoutSpinner);
+
 			if (xhr.status === 204)
 			{
 				if (typeof onsuccess === 'function')
+				{
 					onsuccess.call(null, null);
+				}
 				return;
 			}
+
 			if (xhr.status >= 200 && xhr.status < 300)
 			{
 				const contentDisposition = xhr.getResponseHeader('Content-Disposition');
@@ -86,12 +108,15 @@
 				}
 				catch (e)
 				{
+					// Blijf bij tekst als JSON-parsen faalt
 				}
 
 				try
 				{
 					if (typeof onsuccess === 'function')
+					{
 						onsuccess.call(response, response);
+					}
 					return;
 				}
 				catch (error)
@@ -99,11 +124,11 @@
 					if (typeof onerror === 'function')
 					{
 						onerror.call(xhr, error);
-						return;
 					}
-					throw error;
+					return;
 				}
 			}
+
 			if (xhr.status >= 400)
 			{
 				const error = new Error(`Http:${xhr.status}`);
@@ -115,10 +140,11 @@
 				}
 				throw error;
 			}
+
 			if (xhr.status === 0)
 			{
 				const error = xhr.timedout
-					? new Error(`Timeout ${xhr.timeout}ms for ${url}`)
+					? new Error(`Timeout ${timeout}ms for ${url}`)
 					: new Error(`Network error or request canceled for ${url}`);
 				error.path = url;
 				if (typeof onerror === 'function')
@@ -129,21 +155,21 @@
 				throw error;
 			}
 		};
-		if (onprogress)
+
+		if (typeof onprogress === 'function')
 		{
 			xhr.upload.onprogress = onprogress;
 			xhr.onprogress = onprogress;
 		}
-		xhr.send(data instanceof FormData
-			? data
-			: JSON.stringify(data));
+
+		xhr.send(data instanceof FormData ? data : JSON.stringify(data));
 	};
 
-	window.netproxyasync = function (url, data, onprogress)
+	window.netproxyasync = function (url, data, onprogress, timeout = 30000)
 	{
 		return new Promise((resolve, reject) =>
 		{
-			netproxy(url, data, resolve, reject, onprogress);
+			window.netproxy(url, data, resolve, reject, onprogress, timeout);
 		});
 	};
 
