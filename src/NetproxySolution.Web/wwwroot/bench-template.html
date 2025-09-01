@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+
+	<template id="myTemplate" type="text/template">
+	</template>
+
+	<div id="output"></div>
+
+	<script src="template.js"></script>
+
+	<script>
+		async function getTemplate(url)
+		{
+			try
+			{
+				const response = await fetch(url);
+				if (!response.ok) throw new Error('Network response was not ok');
+				const text = await response.text();
+				return text;
+			}
+			catch (error)
+			{
+				console.error('Fetch error:', error);
+				return null;
+			}
+		}
+
+
+		(async () =>
+		{
+			function currentYear()
+			{
+				return new Date().getFullYear();
+			}
+
+			const data = {
+				"title": "My Blog",
+				"menu": [
+					{ "name": "Home", "url": "/" },
+					{ "name": "About", "url": "/about" },
+					{ "name": "Contact", "url": "/contact" }
+				],
+				"sectionTitle": "Latest Articles",
+				"articles": [
+					{ "title": "Article 1", "content": "Content of article 1." },
+					{ "title": "Article 2", "content": "Content of article 2." }
+				],
+				"aboutMe": "This is a short bio about me.",
+				"links": [
+					{ "name": "GitHub", "url": "https://github.com" },
+					{ "name": "Twitter", "url": "https://twitter.com" }
+				],
+				"currentYear": currentYear
+			}
+
+			const template = document.getElementById('myTemplate');
+
+			template.textContent = await getTemplate('template-test.html');
+
+			const myHtml = TemplateHtml(template, data)
+
+			document.getElementById('output').innerHTML = myHtml;
+
+			const start = performance.now();
+			for (let i = 0; i < 1000; i++)
+			{
+				const html = TemplateHtml(template, data)
+			}
+			const end = performance.now();
+			console.log(`Rendering took ${end - start} ms`);
+
+		})();
+	</script>
+
+</body>
+</html>

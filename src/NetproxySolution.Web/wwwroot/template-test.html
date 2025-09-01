@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>{{ title }}</title>
+</head>
+<body>
+	<header>
+		<h1><%= data.title %></h1>
+	</header>
+
+	<nav>
+		<ul>
+			<% data.menu.forEach(function(item) { %>
+			<li><a href="<%= item.url %>"><%= item.name %></a></li>
+			<% }); %>
+		</ul>
+	</nav>
+
+	<main>
+		<section>
+			<h2><%= data.sectionTitle %></h2>
+			<% if (data.articles.length) { %>
+			<% data.articles.forEach(function(article) { %>
+			<article>
+				<h3><%= article.title %></h3>
+				<p><%= article.content %></p>
+			</article>
+			<% }); %>
+			<% } else { %>
+			<p>No articles available.</p>
+			<% } %>
+		</section>
+
+		<aside>
+		</aside>
+	</main>
+
+	<footer>
+		<p>&copy; <%= data.currentYear %> My Website</p>
+	</footer>
+
+	</body>
+</html>
