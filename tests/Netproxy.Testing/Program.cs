@@ -1,10 +1,14 @@
+using VanDerHeijden.JsonBodyProvider;
+
 var builder = WebApplication.CreateBuilder(new WebApplicationOptions
 {
     // the 'real' root of the application
     ContentRootPath = AppDomain.CurrentDomain.BaseDirectory
 });
 
-builder.Services.AddMvcCore().WithMultiParameterModelBinding(SanitizeAll: true);
+builder.Services.AddMvcCore();
+
+builder.Services.AddJsonBodyProvider();
 
 builder.Services.AddDistributedMemoryCache();
 

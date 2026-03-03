@@ -8,7 +8,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="netproxy" Version="3.0.1" />
+	  <PackageReference Include="netproxy" Version="10.0.2" />
+	  <PackageReference Include="VanDerHeijden.JsonBodyProvider" Version="10.0.4" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -18,11 +19,6 @@
 		<Content Update="wwwroot\*\*">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
-	</ItemGroup>
-
-
-	<ItemGroup>
-		<ProjectReference Include="..\Mvc.ModelBinding.MultiParameter\Mvc.ModelBinding.MultiParameter.csproj" />
 	</ItemGroup>
 
 </Project>

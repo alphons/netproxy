@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding.MultiParameter;
 
 #nullable disable
 
@@ -261,7 +260,6 @@ public class ApiController : ControllerBase
 
 	[HttpPost("~/api/DemoProposal/{SomeParameter2}")]
 	public async Task<IActionResult> DemoProposal(
-		[FromCooky(Name = ".AspNetCore.Session")] string SomeParameter0,
 		[FromHeader(Name = "Referer")] string SomeParameter1,
 		[FromRoute] string SomeParameter2,
 		[FromQuery] string SomeParameter3,
@@ -273,7 +271,6 @@ public class ApiController : ControllerBase
 
 		return Ok(new
 		{
-			SomeParameter0,
 			SomeParameter1,
 			SomeParameter2,
 			SomeParameter3,
@@ -285,7 +282,7 @@ public class ApiController : ControllerBase
 
 
 	[HttpPost("~/api/DemoProposal2/{SomeParameter2}")]
-	public async Task<IActionResult> DemoProposal(
+	public async Task<IActionResult> DemoProposal2(
 		string Referer,
 		string SomeParameter2,
 		string SomeParameter3,
