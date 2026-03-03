@@ -18,8 +18,6 @@
 		<dependencies>
 			<dependency id="VanDerHeijden.JsonBodyProvider" version="10.0.4" />
 		</dependencies>
-		<!-- <releaseNotes>First release.</releaseNotes> -->
-		<!-- <copyright>$copyright$</copyright> -->
 		<tags>javascript netproxy netproxyasync json</tags>
 		<contentFiles>
 			<files include="**/*.*" copyToOutput="true" buildAction="Content" flatten="false" />
