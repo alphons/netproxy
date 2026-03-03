@@ -17,6 +17,7 @@ services.AddRazorPages(o => o.RootDirectory = "/wwwroot");
 services.AddMvcCore().WithMultiParameterModelBinding();
 services.RegisterServices();
 services.AddHttpContextAccessor();
+
 services.AddDistributedMemoryCache();
 services.AddSession();
 
