@@ -195,8 +195,8 @@ For uploading ~~big~~ huge files and hosting inside IIS add requestLimits change
 ```
 
 The multiparameter model binding to MVC Core using nuget package 
-[Mvc.ModelBinding.MultiParameter](https://www.nuget.org/packages/Mvc.ModelBinding.MultiParameter/) 
-is part of netproxy as of version 1.1.0 and later.
+[VanDerHeijden.JsonBodyProvider](https://www.nuget.org/packages/VanDerHeijden.JsonBodyProvider/) 
+is part of netproxy as of version 10.0.0 and later.
 
 ```javascript
 result = await netproxyasync("./api/SomeMethod/two?SomeParameter3=three&SomeParameter6=six",
