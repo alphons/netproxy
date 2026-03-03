@@ -4,53 +4,22 @@
 		<TargetFramework>net10.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<IsPackable>true</IsPackable>
-
-		<!-- NuGet metadata zoals eerder -->
-		<PackageId>netproxy</PackageId>
-		<Version>10.0.1</Version>
-		<Authors>alphons</Authors>
-		<Description>netproxy is a lite framework for posting multiparameter data in json format to .net core controllers (including uploads and progress events)</Description>
-		<PackageTags>javascript;netproxy;netproxyasync;json</PackageTags>
-		<PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
-		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-		<PackageProjectUrl>https://github.com/alphons/netproxy</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/alphons/netproxy.git</RepositoryUrl>
-		<RepositoryType>git</RepositoryType>
-		<RepositoryBranch>master</RepositoryBranch>
-		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\..\netproxy.nuspec" Link="netproxy.nuspec" />
+		<None Include="..\..\README.md" Link="README.md" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="VanDerHeijden.JsonBodyProvider" Version="10.0.4" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<!-- README in package root -->
-		<None Include="..\..\README.md">
-			<Pack>true</Pack>
-			<PackagePath>README.md</PackagePath>
-		</None>
-	</ItemGroup>
-
-	<ItemGroup>
-		<Content Remove="wwwroot\**" />
-
-		<Content Remove="appsettings*.json" />
-
-		<Content Include="wwwroot\scripts\**">
-			<Pack>true</Pack>
-			<PackagePath>contentFiles\any\any\%(RecursiveDir)%(Filename)%(Extension)</PackagePath>
-		</Content>
-
-		<Content Include="wwwroot\images\**">
-			<Pack>true</Pack>
-			<PackagePath>contentFiles\any\any\%(RecursiveDir)%(Filename)%(Extension)</PackagePath>
-		</Content>
-
-		<Content Include="wwwroot\css\**">
-			<Pack>true</Pack>
-			<PackagePath>contentFiles\any\any\%(RecursiveDir)%(Filename)%(Extension)</PackagePath>
+		<Content Update="wwwroot\**">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>
+
 </Project>
+
