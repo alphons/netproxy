@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Mvc.ModelBinding.MultiParameter\src\Mvc.ModelBinding.MultiParameter\Mvc.ModelBinding.MultiParameter.csproj" />
+    <ProjectReference Include="..\..\..\VanDerHeijden.JsonBodyProvider\src\VanDerHeijden.JsonBodyProvider\VanDerHeijden.JsonBodyProvider.csproj" />
   </ItemGroup>
 
   <ItemGroup>

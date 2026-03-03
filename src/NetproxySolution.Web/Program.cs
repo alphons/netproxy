@@ -1,6 +1,7 @@
 
 using NetproxySolution.Web.ErrorHandling;
 using NetproxySolution.Web.Extensions;
+using VanDerHeijden.JsonBodyProvider;
 
 var builder = WebApplication.CreateBuilder(new WebApplicationOptions
 {
@@ -14,7 +15,8 @@ services.AddSingleton(provider => new ErrorService());
 services.AddControllersWithViews();
 services.AddRazorPages(o => o.RootDirectory = "/wwwroot");
 
-services.AddMvcCore().WithMultiParameterModelBinding();
+services.AddMvcCore();
+services.AddJsonBodyProvider();
 services.RegisterServices();
 services.AddHttpContextAccessor();
 
