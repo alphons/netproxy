@@ -27,8 +27,8 @@
 	<files>
 		<file src="README.md" target="docs\" />
 
-		<file src="src\NetproxySolution.Web\wwwroot\**.*"
-			  exclude="src\NetproxySolution.Web\wwwroot\*.*"
+		<file src="src\Netproxy.Web\wwwroot\**.*"
+			  exclude="src\Netproxy.Web\wwwroot\*.*"
 			  target="contentFiles\any\any\wwwroot" />
 	</files>
 </package>
