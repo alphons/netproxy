@@ -2,7 +2,7 @@
 
 Nuget package https://www.nuget.org/packages/netproxy/
 
-This package works seamlessly with the NuGet package https://www.nuget.org/packages/Mvc.ModelBinding.MultiParameter/
+This package works seamlessly with the NuGet package https://www.nuget.org/packages/VanDerHeijden.JsonBodyProvider/
 
 
 ## The Ultimate Bridge Between Client and Server
@@ -327,8 +327,8 @@ For more tests see the [Mvc.ModelBinding.MultiParameter](https://github.com/alph
 ### Credits
 
 - **Author**: Alphons van der Heijden  
-- **Version**: 3.0.0 (Last updated: November 2024)  
-- **License**: © 2019-2024 Alphons van der Heijden  
+- **Version**: 3.0.0 (Last updated: November 2026)  
+- **License**: © 2019-2026 Alphons van der Heijden  
 
 ---
 

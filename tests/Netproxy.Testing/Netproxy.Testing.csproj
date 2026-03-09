@@ -8,8 +8,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="netproxy" Version="10.0.2" />
-	  <PackageReference Include="VanDerHeijden.JsonBodyProvider" Version="10.0.4" />
+	  <PackageReference Include="netproxy" Version="10.0.3" />
+	  <PackageReference Include="VanDerHeijden.JsonBodyProvider" Version="10.0.5" />
 	</ItemGroup>
 
 	<ItemGroup>

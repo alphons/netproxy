@@ -16,7 +16,7 @@
 			.net core controllers (including uploads and progress events)
 		</description>
 		<dependencies>
-			<dependency id="VanDerHeijden.JsonBodyProvider" version="10.0.4" />
+			<dependency id="VanDerHeijden.JsonBodyProvider" version="10.0.5" />
 		</dependencies>
 		<tags>javascript netproxy netproxyasync json</tags>
 		<contentFiles>

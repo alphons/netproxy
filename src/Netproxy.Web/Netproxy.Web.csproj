@@ -12,7 +12,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="VanDerHeijden.JsonBodyProvider" Version="10.0.4" />
+		<PackageReference Include="VanDerHeijden.JsonBodyProvider" Version="10.0.5" />
 	</ItemGroup>
 
 	<ItemGroup>
