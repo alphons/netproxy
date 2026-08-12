@@ -1,5 +1,32 @@
-﻿// version 1.3 2020-08-30 (C) AAB van der Heijden
-// Updated 2.4 2025-01-03
+﻿/**
+ * 
+ *	@name		macros
+ * 
+ *	@author     Alphons van der Heijden <alphons@heijden.com>
+ *	@version    2.6 (last revision 12 aug, 2026)
+ *	@copyright  (c) 2019-2026 Alphons van der Heijden
+ *	@license    GPL-3.0-or-later
+ *	@initial    1.3 2020-08-30 (C) AAB van der Heijden
+ *
+ */
+
+/*
+ * Copyright (C) 2020-2026 Alphons van der Heijden
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 window.$ = document.querySelector.bind(document);
 window.$$ = document.querySelectorAll.bind(document);
 window.$id = document.getElementById.bind(document);

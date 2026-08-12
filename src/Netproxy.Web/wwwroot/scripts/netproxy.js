@@ -3,10 +3,26 @@
  *	@name		pure-dom netproxy and template api
  * 
  *	@author     Alphons van der Heijden <alphons@heijden.com>
- *	@version    3.0.4 (last revision 30 aug, 2025)
- *	@copyright  (c) 2019-2025 Alphons van der Heijden
+ *	@version    3.0.6 (last revision 12 aug, 2026)
+ *	@copyright  (c) 2019-2026 Alphons van der Heijden
+ *	@license    GPL-3.0-or-later
  *	@alias      netproxy, netproxyasync, Element.Template, TemplateHtml
- * 
+ *
+ */
+
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 // please use defer in script tag

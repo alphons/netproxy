@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+
+		<!-- content-only package: no code of its own, no assembly in the package -->
+		<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+		<IncludeBuildOutput>false</IncludeBuildOutput>
+		<!-- NU5128: no lib/ folder while having a dependency group, which is intended here -->
+		<NoWarn>$(NoWarn);NU5128</NoWarn>
+
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+
+		<PackageId>netproxy</PackageId>
+		<Version>10.0.6</Version>
+		<Title>netproxy</Title>
+		<Authors>alphons</Authors>
+		<Description>
+			netproxy is a lite framework for posting multiparameter data in json format to
+			.net core controllers (including uploads and progress events)
+		</Description>
+		<PackageTags>javascript netproxy netproxyasync json</PackageTags>
+		<PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+		<PackageProjectUrl>https://github.com/alphons/netproxy</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/alphons/netproxy.git</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryBranch>master</RepositoryBranch>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="VanDerHeijden.JsonBodyProvider" Version="10.0.6" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\..\README.md" Pack="true" PackagePath="\" />
+		<None Include="..\..\LICENSE" Pack="true" PackagePath="\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<!-- ships wwwroot\css, images and scripts; the demo pages in wwwroot itself are excluded -->
+		<Content Include="..\Netproxy.Web\wwwroot\**\*"
+				 Exclude="..\Netproxy.Web\wwwroot\*.*"
+				 Pack="true"
+				 PackagePath="contentFiles\any\any\wwwroot"
+				 PackageCopyToOutput="true"
+				 CopyToOutputDirectory="Never" />
+	</ItemGroup>
+
+</Project>
