@@ -11,7 +11,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="VanDerHeijden.JsonBodyProvider" Version="10.0.8" />
+	  <PackageReference Include="VanDerHeijden.JsonBodyProvider" Version="10.0.8" />
 	</ItemGroup>
 
 	<ItemGroup>
