@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>net10.0</TargetFramework>
@@ -12,7 +12,7 @@
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
 		<PackageId>netproxy</PackageId>
-		<Version>10.0.7</Version>
+		<Version>10.0.8</Version>
 		<Title>netproxy</Title>
 		<Authors>alphons</Authors>
 		<Description>
@@ -22,15 +22,15 @@
 		<PackageTags>javascript netproxy netproxyasync json</PackageTags>
 		<PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-		<PackageProjectUrl>https://github.com/alphons/netproxy</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/alphons/netproxy.git</RepositoryUrl>
+		<PackageProjectUrl>https://git.heijden.com/alphons/netproxy</PackageProjectUrl>
+		<RepositoryUrl>https://git.heijden.com/alphons/netproxy.git</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<RepositoryBranch>master</RepositoryBranch>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="VanDerHeijden.JsonBodyProvider" Version="10.0.7" />
+		<PackageReference Include="VanDerHeijden.JsonBodyProvider" Version="10.0.8" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -40,12 +40,7 @@
 
 	<ItemGroup>
 		<!-- ships wwwroot\css, images and scripts; the demo pages in wwwroot itself are excluded -->
-		<Content Include="..\Netproxy.Web\wwwroot\**\*"
-				 Exclude="..\Netproxy.Web\wwwroot\*.*"
-				 Pack="true"
-				 PackagePath="contentFiles\any\any\wwwroot"
-				 PackageCopyToOutput="true"
-				 CopyToOutputDirectory="Never" />
+		<Content Include="..\Netproxy.Web\wwwroot\**\*" Exclude="..\Netproxy.Web\wwwroot\*.*" Pack="true" PackagePath="contentFiles\any\any\wwwroot" PackageCopyToOutput="true" CopyToOutputDirectory="Never" />
 	</ItemGroup>
 
 </Project>
