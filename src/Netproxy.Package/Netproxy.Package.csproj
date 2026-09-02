@@ -22,8 +22,8 @@
 		<PackageTags>javascript netproxy netproxyasync json</PackageTags>
 		<PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-		<PackageProjectUrl>https://git.heijden.com/alphons/netproxy</PackageProjectUrl>
-		<RepositoryUrl>https://git.heijden.com/alphons/netproxy.git</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/alphons/netproxy</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/alphons/netproxy.git</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<RepositoryBranch>master</RepositoryBranch>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
